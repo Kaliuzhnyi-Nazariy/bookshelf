@@ -1,0 +1,31 @@
+/* You can add global styles to this file, and also import other style files */
+@import url("https://fonts.googleapis.com/css2?family=Mogra&display=swap");
+
+:root {
+  --backcolor: #f4e1c6;
+  --lettercolor: #ffffff;
+  --headercolor: #768948;
+  --shelfcolor: #e2a858;
+  --insideShelf: #997037;
+  --updBtncolor: #8fad47;
+  --delBtncolor: #c63e40;
+}
+
+body {
+  background-color: var(--backcolor);
+  color: var(--lettercolor);
+  padding: 0;
+  margin: 0;
+  font-family: "Mogra", Courier, monospace;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  margin: 0;
+  padding: 0;
+}
