@@ -1,0 +1,68 @@
+.generalShelfStyle {
+  background-color: var(--shelfcolor);
+  width: 570px;
+  height: 280px;
+  padding: 15px;
+  margin-top: 25px;
+  margin-left: 50px;
+}
+
+.shelfName {
+  text-transform: uppercase;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 5px;
+}
+
+.insideShelf {
+  background-color: var(--insideShelf);
+  height: 250px;
+  width: 575px;
+  display: grid;
+  grid-template-rows: repeat(auto-fill, 115px);
+  grid-row-gap: 15px;
+  grid-template-columns: repeat(7, 1fr);
+  overflow-y: scroll;
+  padding: 0;
+  margin: 0;
+}
+
+.lineOfShelf {
+  /* border-bottom: 2px solid tomato; */
+  width: 100%;
+  display: grid;
+  border-bottom: 15px solid var(--shelfcolor);
+  min-height: 125px;
+  box-sizing: border-box;
+}
+
+.scroll-container {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+/* Add the scrollbar styles as shown above */
+.scroll-container::-webkit-scrollbar {
+  width: 8px;
+}
+
+.scroll-container::-webkit-scrollbar-track {
+  background: var(--insideShelf);
+}
+
+.scroll-container::-webkit-scrollbar-thumb {
+  background: var(--insideShelf);
+  color: var(--shelfcolor);
+  /* border-radius: 10px; */
+  border-radius: 25%;
+}
+
+.scroll-container::-webkit-scrollbar-thumb:hover {
+  background: var(--insideShelf);
+}
+
+.scroll-container {
+  scrollbar-width: thin;
+  scrollbar-color: var(--shelfcolor) var(--insideShelf);
+}

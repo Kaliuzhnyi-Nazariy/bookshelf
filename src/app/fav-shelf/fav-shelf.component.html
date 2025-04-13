@@ -1,0 +1,10 @@
+<div class="generalShelfStyle">
+  <h3 class="shelfName">Favorite</h3>
+  <span class="insideShelf scroll-container">
+    @for(n of listForTest; track n ) {
+    <div class="lineOfShelf">{{ n }}</div>
+    } @for(filler of fillers; track filler) {
+    <div class="lineOfShelf"></div>
+    }
+  </span>
+</div>
