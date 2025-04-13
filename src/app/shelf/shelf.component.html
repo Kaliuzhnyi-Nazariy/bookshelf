@@ -1,0 +1,9 @@
+<div class="generalShelfStyle">
+  <span class="insideShelf scroll-container">
+    @for(n of listForTest; track n ) {
+    <div class="lineOfShelf">{{ n }}</div>
+    } @for(filler of fillers; track filler) {
+    <div class="lineOfShelf"></div>
+    }
+  </span>
+</div>
