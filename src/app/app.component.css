@@ -1,0 +1,20 @@
+.mainContainer {
+  display: grid;
+  grid-template-rows: repeat(2, 1fr);
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.shelf {
+  grid-row: 1;
+}
+
+.fav-shelf {
+  grid-row: 2;
+}
+
+.user {
+  grid-row: 1;
+  grid-column: 2;
+  justify-self: center;
+  align-self: center;
+}
