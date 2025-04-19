@@ -1,12 +1,13 @@
 <div class="main">
   <h2>Your account</h2>
+
   <span class="infoField">
     <h3>Name:</h3>
-    <p>{{ name }}</p>
+    <p>{{ userName }}</p>
   </span>
   <span class="infoField">
     <h3>Email:</h3>
-    <p>{{ email }}</p>
+    <p>{{ userEmail }}</p>
   </span>
   <span class="infoField">
     <h3>All amount of books:</h3>
@@ -16,12 +17,16 @@
     <button class="button upd">Update</button>
     <button class="button del">Delete</button>
   </div>
+
+  @if(!isLoggedIn) {
   <div class="notEntered">
     <h3>Auth</h3>
     <p>For use this app please authorize!</p>
     <div class="groupOfButtons">
-      <button class="button signin">Sign in</button>
-      <button class="button signup">Sign up</button>
+      <button class="button signin" (click)="openSignInModal()">Sign in</button>
+      <button class="button signup" (click)="openSignUpModal()">Sign up</button>
     </div>
   </div>
+
+  }
 </div>
