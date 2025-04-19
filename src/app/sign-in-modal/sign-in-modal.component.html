@@ -1,0 +1,52 @@
+<div class="general">
+  <h3>Sign in!</h3>
+  <form [formGroup]="signinForm" (ngSubmit)="onSubmit()" class="form">
+    <mat-form-field>
+      <mat-label>Enter your email</mat-label>
+      <input
+        matInput
+        placeholder="pat@example.com"
+        formControlName="email"
+        (blur)="updateEmailMessage()"
+        required
+      />
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Enter your password</mat-label>
+      <input
+        matInput
+        placeholder="password"
+        formControlName="password"
+        (blur)="updatePasswordMessage()"
+        required
+        [type]="hide() ? 'password' : 'string'"
+      />
+      <button
+        mat-icon-button
+        matSuffix
+        (click)="changeVisability($event)"
+        [attr.aria-label]="'Hide password'"
+        [attr.aria-pressed]="hide()"
+      >
+        <mat-icon>{{ hide() ? "visibility_off" : "visibility" }}</mat-icon>
+      </button>
+    </mat-form-field>
+
+    @if(!isLoading) {
+
+    <button type="submit" class="button">Sign in</button>
+    } @else {
+
+    <span style="color: black">Loading...</span>
+    } @if(errorReqMessage()) {
+    <mat-error>{{ errorReqMessage() }}</mat-error>
+
+    } @if(emailErrorMessage()) {
+    <mat-error>Email: {{ emailErrorMessage() }}</mat-error>
+    } @if(passwordErrorMessage()){
+    <mat-error>Password: {{ passwordErrorMessage() }}</mat-error>
+    }
+  </form>
+</div>
+<!-- [type]="password" -->

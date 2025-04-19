@@ -1,0 +1,35 @@
+.general {
+  background-color: var(--shelfcolor);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 16px;
+  min-height: 250px;
+}
+
+.form {
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.field {
+  fill: var(--insideShelf);
+}
+
+.button {
+  background-color: var(--lettercolor);
+  color: var(--insideShelf);
+  font-family: "Mogra", Courier, monospace;
+  font-size: 16px;
+  border-radius: 15px;
+  border: transparent;
+  padding: 8px 16px;
+}
+
+mat-error {
+  margin-top: 12px;
+}
