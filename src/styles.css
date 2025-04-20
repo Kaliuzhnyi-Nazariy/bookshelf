@@ -8,7 +8,10 @@
   --shelfcolor: #e2a858;
   --insideShelf: #997037;
   --updBtncolor: #8fad47;
+  --updBtncolorHover: #6b8137;
+  --logoutHover: #b78845;
   --delBtncolor: #c63e40;
+  --delBtncolorHover: #9a2a2c;
 }
 
 body {
