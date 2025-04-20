@@ -67,12 +67,7 @@ export class AuthService {
       );
   }
 
-  checkIfLogged(): Observable<ICreatedUser> | void {
-    console.log(document.cookie.includes('accessToken'));
-    if (!document.cookie.includes('accessToken')) {
-      return;
-    }
-
+  logout(): Observable<void> {
     const accessToken = document.cookie
       .split('; ')
       .find((row) => row, startWith('accessToken='))
@@ -84,13 +79,13 @@ export class AuthService {
     });
 
     return this.http
-      .get<ICreatedUser>(`http://localhost:3500/users/me`, {
+      .delete<void>(`${this.baseURL}/logout`, {
         headers,
+        withCredentials: true,
       })
       .pipe(
-        tap((res) => {
-          this.setUserData(res);
-          this.setAuthStat(true);
+        tap(() => {
+          this.setAuthStat(false);
         })
       );
   }
