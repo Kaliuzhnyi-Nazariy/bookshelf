@@ -11,8 +11,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { AuthService } from '../api';
 import { CommonModule } from '@angular/common';
-import { merge } from 'rxjs';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-sign-up-modal',
@@ -22,6 +22,8 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
     FormsModule,
     ReactiveFormsModule,
     CommonModule,
+    MatButtonModule,
+    MatIconModule,
   ],
   templateUrl: './sign-up-modal.component.html',
   styleUrl: './sign-up-modal.component.css',
@@ -37,6 +39,8 @@ export class SignUpModalComponent {
   confirmPasswordErrorMessage = signal('');
 
   errorReqMessage = signal('');
+
+  hide = signal(true);
 
   constructor(
     private fb: FormBuilder,
@@ -173,5 +177,10 @@ export class SignUpModalComponent {
     } else {
       this.confirmPasswordErrorMessage.set('');
     }
+  }
+
+  changeVisability(event: MouseEvent) {
+    this.hide.set(!this.hide());
+    event.stopPropagation();
   }
 }

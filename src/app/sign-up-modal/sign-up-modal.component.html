@@ -24,25 +24,45 @@
     </mat-form-field>
 
     <mat-form-field>
-      <mat-label>Enter your password</mat-label>
+      <mat-label>Password</mat-label>
       <input
         matInput
+        [type]="hide() ? 'password' : 'text'"
         placeholder="password"
         formControlName="password"
         (blur)="updatePasswordMessage()"
         required
       />
+      <button
+        mat-icon-button
+        matSuffix
+        (click)="changeVisability($event)"
+        [attr.aria-label]="'Hide password'"
+        [attr.aria-pressed]="hide()"
+      >
+        <mat-icon>{{ hide() ? "visibility_off" : "visibility" }}</mat-icon>
+      </button>
     </mat-form-field>
 
     <mat-form-field>
-      <mat-label>Enter your confirmation</mat-label>
+      <mat-label>Confirmation</mat-label>
       <input
         matInput
+        [type]="hide() ? 'password' : 'text'"
         placeholder="confirm password"
         formControlName="confirmPassword"
         (blur)="updateConfirmPasswordMessage()"
         required
       />
+      <button
+        mat-icon-button
+        matSuffix
+        (click)="changeVisability($event)"
+        [attr.aria-label]="'Hide password'"
+        [attr.aria-pressed]="hide()"
+      >
+        <mat-icon>{{ hide() ? "visibility_off" : "visibility" }}</mat-icon>
+      </button>
     </mat-form-field>
 
     @if(!isLoading) {
