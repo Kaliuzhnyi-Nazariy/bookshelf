@@ -28,21 +28,43 @@ h2 {
 }
 
 .button {
-  width: 235px;
+  width: 165px;
   height: 45px;
   border-radius: 15px;
   color: var(--lettercolor);
   font-family: "Mogra", Courier, monospace;
   font-size: 20px;
-  border: transparent;
+  border: 3px solid transparent;
+  transition: all 250ms;
+  &:hover,
+  &:active {
+    transform: scale(1.1);
+  }
 }
 
 .upd {
   background-color: var(--updBtncolor);
+  &:hover,
+  &:active {
+    border: 3px solid var(--updBtncolorHover);
+  }
+}
+
+.lo {
+  background-color: var(--shelfcolor);
+  &:hover,
+  &:active {
+    border: 3px solid var(--logoutHover);
+  }
 }
 
 .del {
   background-color: var(--delBtncolor);
+
+  &:hover,
+  &:active {
+    border: 3px solid var(--delBtncolorHover);
+  }
 }
 
 .notEntered {

@@ -14,8 +14,9 @@
     <p>{{ allAmountOfBooks }}</p>
   </span>
   <div class="groupOfButtons">
-    <button class="button upd">Update</button>
-    <button class="button del">Delete</button>
+    <button class="button upd" (click)="openUpdModal()">Update</button>
+    <button class="button lo" (click)="logout()">log out</button>
+    <button class="button del" (click)="openDelModal()">Delete</button>
   </div>
 
   @if(!isLoggedIn) {
