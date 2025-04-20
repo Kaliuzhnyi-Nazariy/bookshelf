@@ -1,0 +1,31 @@
+.general {
+  background-color: var(--insideShelf);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 24px 16px;
+  font-size: larger;
+}
+
+.groupOfButtons {
+  width: 100%;
+  margin-top: 12px;
+  display: flex;
+  justify-content: space-around;
+}
+
+.button {
+  width: 105px;
+  height: 45px;
+  border-radius: 15px;
+  color: var(--lettercolor);
+  font-family: "Mogra", Courier, monospace;
+  font-size: 20px;
+  border: 3px solid transparent;
+  transition: all 250ms;
+  &:hover,
+  &:active {
+    transform: scale(1.1);
+  }
+}

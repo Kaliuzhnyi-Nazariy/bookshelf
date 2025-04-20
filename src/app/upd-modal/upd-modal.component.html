@@ -1,0 +1,65 @@
+<div class="general">
+  <h3>Update data</h3>
+  <p>Please enter new data!</p>
+  <form [formGroup]="updForm" (ngSubmit)="onSubmit()" class="form">
+    <mat-form-field apperance="fill" class="field">
+      <mat-label>Enter your name</mat-label>
+      <input
+        matInput
+        placeholder="Jack"
+        formControlName="name"
+        required
+        (blur)="updateNameErrorMessage()"
+      />
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Enter your email</mat-label>
+      <input
+        matInput
+        placeholder="pat@example.com"
+        formControlName="email"
+        required
+        (blur)="updateEmailErrorMessage()"
+      />
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Password</mat-label>
+      <input
+        matInput
+        [type]="hide() ? 'password' : 'text'"
+        placeholder="password"
+        formControlName="password"
+        (blur)="updatePasswordErrorMessage()"
+        required
+      />
+      <button
+        mat-icon-button
+        matSuffix
+        (click)="changeVisability($event)"
+        [attr.aria-label]="'Hide password'"
+        [attr.aria-pressed]="hide()"
+      >
+        <mat-icon>{{ hide() ? "visibility_off" : "visibility" }}</mat-icon>
+      </button>
+    </mat-form-field>
+
+    @if(!isLoading) {
+
+    <span>Loading...</span>
+    } @else {
+
+    <button type="submit" class="button">Update</button>
+    }
+    <!-- @if (nameErrorMessage()) {
+    <mat-error>{{ nameErrorMessage() }}</mat-error> } @if (emailErrorMessage())
+    {
+    <mat-error>Email: {{ emailErrorMessage() }}</mat-error>
+    } @if(passwordErrorMessage()) {
+    <mat-error>Password: {{ passwordErrorMessage() }}</mat-error
+    >} @if(confirmPasswordErrorMessage()) {
+    <mat-error>Confirm password: {{ confirmPasswordErrorMessage() }}</mat-error
+    >} -->
+  </form>
+</div>
