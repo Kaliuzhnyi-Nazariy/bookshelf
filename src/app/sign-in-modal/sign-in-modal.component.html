@@ -16,11 +16,11 @@
       <mat-label>Enter your password</mat-label>
       <input
         matInput
+        [type]="hide() ? 'password' : 'text'"
         placeholder="password"
         formControlName="password"
         (blur)="updatePasswordMessage()"
         required
-        [type]="hide() ? 'password' : 'string'"
       />
       <button
         mat-icon-button
