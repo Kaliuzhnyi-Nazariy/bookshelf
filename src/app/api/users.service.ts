@@ -3,6 +3,7 @@ import { Observable, startWith, tap } from 'rxjs';
 import { ICreatedUser, IUpdUser, IUpdUserReturn } from '../dtos';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AuthService } from './auth.service';
+import { accessToken as at } from './helper';
 
 @Injectable({
   providedIn: 'root',
@@ -10,13 +11,6 @@ import { AuthService } from './auth.service';
 export class UsersService {
   userName = signal('');
   userEmail = signal('');
-
-  getAccessToken(): string | undefined {
-    return document.cookie
-      .split('; ')
-      .find((row) => row, startWith('accessToken='))
-      ?.split('=')[1];
-  }
 
   private baseURL = 'http://localhost:3500/users';
 
@@ -30,7 +24,7 @@ export class UsersService {
       return;
     }
 
-    const accessToken = this.getAccessToken();
+    const accessToken = at();
 
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
@@ -52,7 +46,7 @@ export class UsersService {
   }
 
   updateUserData(dto: IUpdUser): Observable<IUpdUserReturn> {
-    const accessToken = this.getAccessToken();
+    const accessToken = at();
 
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
@@ -63,7 +57,7 @@ export class UsersService {
   }
 
   deleteUser(): Observable<void> | void {
-    const accessToken = this.getAccessToken();
+    const accessToken = at();
 
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
@@ -78,7 +72,7 @@ export class UsersService {
       .pipe(
         tap(() => {
           this.authService.setAuthStat(false);
-          this.authService.cleanUserData();
+          this.authService.clearUserData();
           this.userName.set('');
           this.userEmail.set('');
         })

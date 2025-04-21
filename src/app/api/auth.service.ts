@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { ICreatedUser, ISignIn, ISignUp } from '../dtos';
 import { BehaviorSubject, Observable, startWith, Subject, tap } from 'rxjs';
+import { accessToken as at } from './helper';
 
 @Injectable({
   providedIn: 'root',
@@ -31,7 +32,7 @@ export class AuthService {
     this.user.next(userData);
   }
 
-  cleanUserData() {
+  clearUserData() {
     this.user.next({
       _id: '',
       accessToken: '',
@@ -78,10 +79,7 @@ export class AuthService {
   }
 
   logout(): Observable<void> {
-    const accessToken = document.cookie
-      .split('; ')
-      .find((row) => row, startWith('accessToken='))
-      ?.split('=')[1];
+    const accessToken = at();
 
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
