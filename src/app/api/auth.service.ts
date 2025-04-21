@@ -31,6 +31,16 @@ export class AuthService {
     this.user.next(userData);
   }
 
+  cleanUserData() {
+    this.user.next({
+      _id: '',
+      accessToken: '',
+      email: '',
+      password: '',
+      name: '',
+    });
+  }
+
   signUp(dto: ISignUp): Observable<ICreatedUser> {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
