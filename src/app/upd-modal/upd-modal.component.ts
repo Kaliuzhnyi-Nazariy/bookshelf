@@ -12,7 +12,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatDialogRef } from '@angular/material/dialog';
-import { UsersService } from '../api';
+import { AuthService, UsersService } from '../api';
 
 @Component({
   selector: 'app-upd-modal',
@@ -44,11 +44,18 @@ export class UpdModalComponent {
   constructor(
     private fb: FormBuilder,
     public dialog: MatDialogRef<UpdModalComponent>,
-    private usersService: UsersService
+    private usersService: UsersService,
+    private authService: AuthService
   ) {
     this.updForm = this.fb.group({
-      name: ['', [Validators.required, Validators.minLength(3)]],
-      email: ['', [Validators.email, Validators.required]],
+      name: [
+        this.usersService.userName(),
+        [Validators.required, Validators.minLength(3)],
+      ],
+      email: [
+        this.usersService.userEmail(),
+        [Validators.email, Validators.required],
+      ],
       password: [
         '',
         [
@@ -69,6 +76,7 @@ export class UpdModalComponent {
         this.usersService.updateUserData(this.updForm.value).subscribe({
           next: () => {
             this.isLoading.set(false);
+            this.authService.setAuthStat(false);
             this.dialog.close();
           },
           error: (err) => {
