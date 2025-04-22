@@ -1,6 +1,6 @@
 <div class="general">
   <h3>Add book</h3>
-  <form [formGroup]="addBook" (ngSubmit)="onSubmit()">
+  <form [formGroup]="addBook" (ngSubmit)="onSubmit()" class="form">
     <mat-form-field apperance="fill" class="field">
       <mat-label>Title</mat-label>
       <input
@@ -34,18 +34,29 @@
       ></textarea>
     </mat-form-field>
 
-    <p style="color: aquamarine"></p>
+    <input
+      type="file"
+      accept=".jpg, .png"
+      class="file"
+      (change)="uploadPhoto($event)"
+    />
 
-    @if(isLoading()) {
+    @if(imageName()) {
+    <p class="imageName">{{ imageName() }}</p>
+    } @if(isLoading()) {
     <span>Loading...</span>
     } @else {
-    <button type="submit">Add</button>
+    <button type="submit" class="button">Add</button>
+    } @if(reqErrMessage()){
+    <mat-error>{{ reqErrMessage() }}</mat-error>
     } @if(titleErrMessage()){
     <mat-error>Title: {{ titleErrMessage() }}</mat-error>
     } @if(authorErrMessage()){
     <mat-error>Author: {{ authorErrMessage() }}</mat-error>
     } @if(DAOErrMessage()) {
     <mat-error>Description and opinion: {{ DAOErrMessage() }}</mat-error>
+    } @if(imageErrMessage()) {
+    <mat-error>Image: {{ imageErrMessage() }}</mat-error>
     }
   </form>
 </div>

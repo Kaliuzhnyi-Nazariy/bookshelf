@@ -8,6 +8,7 @@ import {
   ReactiveFormsModule,
   Validators,
   FormsModule,
+  AbstractControl,
 } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -37,6 +38,8 @@ export class AddBookModalComponent {
 
   reqErrMessage = signal('');
 
+  imageName = signal('');
+
   constructor(
     private dialog: MatDialogRef<AddBookModalComponent>,
     private bookService: BookService,
@@ -46,8 +49,58 @@ export class AddBookModalComponent {
       title: ['', [Validators.required]],
       author: ['', [Validators.required]],
       descripionAndOpinion: ['', [Validators.maxLength(256)]],
-      imageUrl: [''],
+      image: [null, [this.imageValidator()]],
     });
+  }
+
+  imageValidator(
+    maxSizeMB: number = 1,
+    allowedTypes: Array<string> = ['image/png', 'image/jpeg']
+  ) {
+    return (control: AbstractControl) => {
+      const file = control.value;
+
+      if (!file) return null;
+
+      if (!(file instanceof File)) return { invalidFile: true };
+
+      const isTypeValid = allowedTypes.includes(file.type);
+      const isSizeValid = file.size >= maxSizeMB * 1024 * 1024;
+
+      if (!isTypeValid) {
+        this.imageErrMessage.set('File can be only png or jpg');
+        return { invalidType: true };
+      }
+
+      if (isSizeValid) {
+        this.imageErrMessage.set('File can be less than 1MB');
+        return { maxSizeExceeded: true };
+      }
+
+      return null;
+    };
+  }
+
+  uploadPhoto(event: Event) {
+    this.imageErrMessage.set('');
+
+    const target = event.target as HTMLInputElement;
+    const file = target?.files?.[0];
+    const maxsize = 1 * 1024 * 1024;
+    console.log(file);
+
+    if (!file) return;
+
+    console.log(87958 > 1024 * 1024);
+
+    if (file && file?.size > maxsize) {
+      this.imageErrMessage.set('photo should be less than 1mb');
+      return;
+    }
+
+    this.imageName.set(file.name);
+    this.addBook.patchValue({ image: file });
+    this.addBook.get('image')?.updateValueAndValidity();
   }
 
   onClose() {
@@ -56,6 +109,8 @@ export class AddBookModalComponent {
 
   onSubmit(): void {
     this.isLoading.set(true);
+    this.reqErrMessage.set('');
+
     try {
       if (this.addBook.valid) {
         this.bookService
