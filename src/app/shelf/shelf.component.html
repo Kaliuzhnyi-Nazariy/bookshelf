@@ -1,9 +1,20 @@
 <div class="generalShelfStyle">
-  <span class="insideShelf scroll-container">
-    @for(n of listForTest; track n ) {
-    <div class="lineOfShelf">{{ n }}</div>
-    } @for(filler of fillers; track filler) {
-    <div class="lineOfShelf"></div>
-    }
-  </span>
+  <table class="tableShelf scroll-container">
+    <tbody>
+      @for (row of chunkedList; track $index) {
+      <tr class="tableRow">
+        @for (item of row; track $index) { @if(item !== 'add') {
+        <td class="tableCell" (click)="openUpdModal(item)">
+          {{ item }}
+        </td>
+
+        } @else {
+        <td class="tableCell" (click)="openAddModal(item)">
+          {{ item }}
+        </td>
+        } }
+      </tr>
+      }
+    </tbody>
+  </table>
 </div>
