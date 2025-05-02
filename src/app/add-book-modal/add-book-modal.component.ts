@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, signal } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { BookService } from '../api/book.service';
 import { switchMap } from 'rxjs';
@@ -43,7 +43,8 @@ export class AddBookModalComponent {
   constructor(
     private dialog: MatDialogRef<AddBookModalComponent>,
     private bookService: BookService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private cdr: ChangeDetectorRef
   ) {
     this.addBook = this.fb.group({
       title: ['', [Validators.required]],
@@ -80,23 +81,28 @@ export class AddBookModalComponent {
       return null;
     };
   }
-
+  imagePreview: string | ArrayBuffer | null = null;
   uploadPhoto(event: Event) {
     this.imageErrMessage.set('');
 
     const target = event.target as HTMLInputElement;
     const file = target?.files?.[0];
     const maxsize = 1 * 1024 * 1024;
-    console.log(file);
 
     if (!file) return;
 
-    console.log(87958 > 1024 * 1024);
-
     if (file && file?.size > maxsize) {
       this.imageErrMessage.set('photo should be less than 1mb');
+      this.imageName.set('');
       return;
     }
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.imagePreview = reader.result;
+    };
+
+    reader.readAsDataURL(file);
 
     this.imageName.set(file.name);
     this.addBook.patchValue({ image: file });
@@ -107,26 +113,26 @@ export class AddBookModalComponent {
     this.dialog.close();
   }
 
-  onSubmit(): void {
+  onSubmit() {
     this.isLoading.set(true);
     this.reqErrMessage.set('');
 
     try {
       if (this.addBook.valid) {
-        this.bookService
-          .postBook(this.addBook.value)
-          ?.pipe(switchMap(() => this.bookService.getBooks()))
-          .subscribe({
-            next: (books) => {
-              console.log(books);
-              this.isLoading.set(false);
-              this.dialog.close();
-            },
-            error: (err) => {
-              this.isLoading.set(false);
-              this.reqErrMessage.set(err.error.message);
-            },
-          });
+        const formData = new FormData();
+
+        formData.append('title', this.addBook.value.title);
+        formData.append('author', this.addBook.value.author);
+        formData.append(
+          'descripionAndOpinion',
+          this.addBook.value.descripionAndOpinion || ''
+        );
+        if (this.addBook.value.image) {
+          formData.append('file', this.addBook.value.image);
+        }
+        this.bookService.postBook(formData);
+        this.isLoading.set(false);
+        this.dialog.close();
       } else {
         this.isLoading.set(false);
         this.reqErrMessage.set('Something went wrong!');

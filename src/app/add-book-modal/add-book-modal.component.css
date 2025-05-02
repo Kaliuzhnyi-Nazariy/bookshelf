@@ -1,23 +1,59 @@
 .general {
   background-color: var(--shelfcolor);
-  display: flex;
+  /* display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: center; */
   align-items: center;
   padding: 16px;
   min-height: 410px;
+  width: 800px;
+  overflow-x: hidden;
+}
+
+h3 {
+  display: flex;
+  justify-content: center;
 }
 
 .form {
   margin-top: 16px;
-  display: flex;
-  flex-direction: column;
+  /* display: flex; */
+  /* flex-direction: column;
   justify-content: center;
-  align-items: center;
+  align-items: center; */
+
+  display: grid;
+  /* grid-template-rows: repeat(6, 1fr); */
+  grid-auto-rows: auto;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-areas:
+    "p p n a"
+    "p p d d"
+    "pi pi b b"
+    "re re re re";
+  /* ". . en ea"
+    "p p d d"
+    "ep ep dn dn"
+    "re re re re"; */
+  width: 100%;
+  max-width: 800px;
 }
 
-mat-form-field {
-  max-width: 210px;
+.title {
+  grid-area: n;
+  width: 95%;
+  justify-self: center;
+}
+
+.author {
+  grid-area: a;
+  width: 95%;
+  justify-self: center;
+}
+
+.DAO {
+  grid-area: d;
+  width: 100%;
 }
 
 .button {
@@ -32,6 +68,8 @@ mat-form-field {
 
   transition: all 150ms;
 
+  height: 40px;
+
   &:hover {
     color: var(--shelfcolor);
     transform: scale(1.1);
@@ -39,11 +77,26 @@ mat-form-field {
 }
 
 mat-error {
-  margin-top: 12px;
+  justify-self: center;
+}
+
+.file-field {
+  grid-area: p;
+  /* width: 50%;
+  height: 50%; */
+}
+
+.preview {
+  width: 40px;
+  height: 75px;
 }
 
 .file {
-  width: 210px;
+  width: 90%;
+  align-self: center;
+  justify-self: center;
+  height: 85%;
+  /* width: 210px; */
   /*height: 50px; */
   border: 3px dashed var(--insideShelf);
   border-radius: 25px;
@@ -64,7 +117,8 @@ mat-error {
 
 .file::before {
   content: "+ Add file (to 1MB)";
-  padding-left: 22.5%;
+  padding-left: 34%;
+  padding-top: 35%;
   display: inline-block;
 
   font-weight: 700;
@@ -75,7 +129,15 @@ mat-error {
 }
 
 .imageName {
+  grid-area: pi;
+  align-self: center;
+  justify-self: center;
   margin-top: 12px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  width: 100%;
 }
 
 span {

@@ -1,7 +1,7 @@
 <div class="general">
   <h3>Add book</h3>
   <form [formGroup]="addBook" (ngSubmit)="onSubmit()" class="form">
-    <mat-form-field apperance="fill" class="field">
+    <mat-form-field apperance="fill" class="title">
       <mat-label>Title</mat-label>
       <input
         matInput
@@ -10,9 +10,14 @@
         (blur)="updateTitleErrMessage()"
         required
       />
+      @if(titleErrMessage()){
+      <mat-error style="grid-area: en; width: 100%"
+        >Title: {{ titleErrMessage() }}</mat-error
+      >
+      }
     </mat-form-field>
 
-    <mat-form-field apperance="fill" class="field">
+    <mat-form-field apperance="fill" class="author">
       <mat-label>Author</mat-label>
       <input
         matInput
@@ -21,9 +26,14 @@
         (blur)="updateAuthorErrMessage()"
         required
       />
+      @if(authorErrMessage()){
+      <mat-error style="grid-area: ea"
+        >Author: {{ authorErrMessage() }}</mat-error
+      >
+      }
     </mat-form-field>
 
-    <mat-form-field apperance="fill" class="field">
+    <mat-form-field apperance="fill" class="DAO">
       <mat-label>Description and opinion</mat-label>
       <textarea
         matInput
@@ -32,31 +42,56 @@
         (blur)="updateDAOErrMessage()"
         style="resize: none; height: 180px"
       ></textarea>
+      @if(DAOErrMessage()) {
+      <mat-error style="grid-area: dn"
+        >Description and opinion: {{ DAOErrMessage() }}</mat-error
+      >}
     </mat-form-field>
 
-    <input
-      type="file"
-      accept=".jpg, .png"
-      class="file"
-      (change)="uploadPhoto($event)"
-    />
+    <div class="file-field">
+      <input
+        type="file"
+        accept=".jpg, .png"
+        class="file"
+        (change)="uploadPhoto($event)"
+      />
 
+      @if(imageErrMessage()) {
+      <mat-error style="grid-area: pi; align-self: center; justify-self: center"
+        >Image: {{ imageErrMessage() }}</mat-error
+      >
+      }
+    </div>
     @if(imageName()) {
-    <p class="imageName">{{ imageName() }}</p>
+    <div class="imageName">
+      @if(imagePreview) {
+      <img [src]="imagePreview" alt="" class="preview" />
+      }
+      <p>
+        {{ imageName() }}
+      </p>
+    </div>
     } @if(isLoading()) {
     <span>Loading...</span>
     } @else {
-    <button type="submit" class="button">Add</button>
+    <button type="submit" class="button" style="grid-area: b">Add</button>
     } @if(reqErrMessage()){
-    <mat-error>{{ reqErrMessage() }}</mat-error>
-    } @if(titleErrMessage()){
-    <mat-error>Title: {{ titleErrMessage() }}</mat-error>
-    } @if(authorErrMessage()){
-    <mat-error>Author: {{ authorErrMessage() }}</mat-error>
-    } @if(DAOErrMessage()) {
-    <mat-error>Description and opinion: {{ DAOErrMessage() }}</mat-error>
-    } @if(imageErrMessage()) {
-    <mat-error>Image: {{ imageErrMessage() }}</mat-error>
+    <mat-error style="grid-area: re; margin-top: 12px">{{
+      reqErrMessage()
+    }}</mat-error>
     }
+    <!--@if(titleErrMessage()){
+    <mat-error style="grid-area: en">Title: {{ titleErrMessage() }}</mat-error>
+    } @if(authorErrMessage()){
+    <mat-error style="grid-area: ea"
+      >Author: {{ authorErrMessage() }}</mat-error
+    >
+    } @if(DAOErrMessage()) {
+    <mat-error style="grid-area: dn"
+      >Description and opinion: {{ DAOErrMessage() }}</mat-error
+    >
+    } @if(imageErrMessage()) {
+    <mat-error style="grid-area: pn">Image: {{ imageErrMessage() }}</mat-error>
+    } -->
   </form>
 </div>
