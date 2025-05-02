@@ -1,7 +1,45 @@
 <div class="generalShelfStyle">
+  <h3 class="shelfName">All books</h3>
+  <table class="tableShelf scroll-container">
+    <tr style="visibility: collapse">
+      <th tyle="width: 80px">Column 1</th>
+      <th tyle="width: 80px">Column 2</th>
+      <th tyle="width: 80px">Column 3</th>
+      <th tyle="width: 80px">Column 4</th>
+      <th tyle="width: 80px">Column 5</th>
+      <th tyle="width: 80px">Column 6</th>
+      <th tyle="width: 80px">Column 7</th>
+      <th tyle="width: 80px">Column 7</th>
+    </tr>
+    @for (row of chunkedList; track $index) {
+    <tr class="tableRow">
+      @for (item of row; track $index) { @if(item.title !== 'add') {
+      <td class="tableCell">
+        <app-book-component [allItem]="item" />
+      </td>
+
+      } @else {
+      <td class="tableCell addButton" (click)="openAddModal()">add</td>
+      } }
+    </tr>
+    }
+  </table>
+</div>
+<!-- (favoriteToggled)="onFavoriteBook($event)" -->
+
+<!-- <div class="generalShelfStyle">
   <table class="tableShelf scroll-container">
     <tbody>
-      @for (row of chunkedList; track $index) {
+      <tr style="visibility: collapse">
+        <th tyle="width: 80px;">Column 1</th>
+        <th tyle="width: 80px;">Column 2</th>
+        <th tyle="width: 80px;">Column 3</th>
+        <th tyle="width: 80px;">Column 4</th>
+        <th tyle="width: 80px;">Column 5</th>
+        <th tyle="width: 80px;">Column 6</th>
+        <th tyle="width: 80px;">Column 7</th>
+      </tr>
+      @for (row of chunkedListTest; track $index) {
       <tr class="tableRow">
         @for (item of row; track $index) { @if(item !== 'add') {
         <td class="tableCell" (click)="openUpdModal(item)">
@@ -9,12 +47,10 @@
         </td>
 
         } @else {
-        <td class="tableCell" (click)="openAddModal(item)">
-          {{ item }}
-        </td>
+        <td class="tableCell" (click)="openAddModal()">add</td>
         } }
       </tr>
       }
     </tbody>
   </table>
-</div>
+</div> -->

@@ -1,53 +1,51 @@
-import { AfterContentInit, Component, OnInit } from '@angular/core';
+import { Component, effect, OnInit, signal } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { BookUpdModalComponent } from '../book-upd-modal/book-upd-modal.component';
 import { BookService } from '../api/book.service';
 import { AddBookModalComponent } from '../add-book-modal/add-book-modal.component';
+import { Book } from '../dtos';
+import { BookComponent } from '../book-component/book-component.component';
 
 @Component({
   selector: 'app-shelf',
-  imports: [],
+  imports: [BookComponent],
   templateUrl: './shelf.component.html',
   styleUrl: './shelf.component.css',
 })
-export class ShelfComponent implements OnInit, AfterContentInit {
-  public listForTest: string[] = [];
-  public chunkedList: string[][] = [];
+export class ShelfComponent implements OnInit {
+  // public listForTest: string[] = [];
+  // public chunkedListTest: string[][] = [];
+  public listOfBooks: Book[] = [];
+  public chunkedList: Book[][] = [];
   private columnAmount = 7;
 
-  constructor(public dialog: MatDialog, private bookService: BookService) {}
+  isLoading = signal(false);
+  errorFetch = signal('');
 
-  ngOnInit(): void {
-    this.listForTest = [
-      'name1',
-      'name2',
-      'name3',
-      'name4',
-      'name5',
-      'name6',
-      'name7',
-      'name8',
-      'name9',
-      'name10',
-      'name11',
-    ];
-
-    this.chunkedList = this.chunkArray(this.listForTest, this.columnAmount);
-    console.log(this.chunkedList);
-  }
-
-  ngAfterContentInit(): void {
-    this.bookService.getBooks().subscribe({
-      next(value) {
-        console.log(value);
-      },
+  constructor(public dialog: MatDialog, private bookService: BookService) {
+    effect(() => {
+      this.listOfBooks = this.bookService.books();
+      this.chunkedList = this.chunkArray(this.listOfBooks, this.columnAmount);
     });
   }
+  ngOnInit(): void {
+    this.bookService.getBooks();
+  }
 
-  private chunkArray(array: string[], columns: number): any[][] {
+  private chunkArray(array: Book[], columns: number): any[][] {
+    // private chunkArray(array: string[], columns: number): any[][] {
     const result = [];
 
-    const fullList = [...array, 'add'];
+    let unfavArr = [];
+
+    for (let i = 0; i < array.length; i++) {
+      if (!array[i].favorite) {
+        unfavArr.push(array[i]);
+      }
+    }
+
+    const fullList = [...unfavArr, { title: 'add' } as Book];
+    // const fullList = [...array];
 
     for (let i = 0; i < fullList.length; i += columns) {
       result.push(fullList.slice(i, i + columns));
@@ -56,15 +54,42 @@ export class ShelfComponent implements OnInit, AfterContentInit {
     return result;
   }
 
-  openUpdModal(item: string) {
-    console.log(item);
+  openUpdModal(item: Book) {
+    // openUpdModal(item: string) {
     // this.modal.itemName.set(item);
-    this.dialog.open(BookUpdModalComponent, { width: '300px' });
+    const dialogRef = this.dialog.open(BookUpdModalComponent, {
+      width: '832px',
+      maxWidth: '832px',
+      data: item,
+    });
+
+    dialogRef.afterClosed().subscribe({
+      next: () => {
+        // this.takeBooks();
+      },
+    });
   }
 
-  openAddModal(item: string) {
-    console.log(item);
+  openAddModal() {
     // this.modal.itemName.set(item);
-    this.dialog.open(AddBookModalComponent, { width: '300px' });
+    // this.dialog.open(AddBookModalComponent, { width: '300px' });
+    const dialogRef = this.dialog.open(AddBookModalComponent, {
+      width: '832px',
+      maxWidth: '832px',
+    });
+
+    dialogRef.afterClosed().subscribe({
+      next: () => {
+        // this.takeBooks();
+      },
+    });
+  }
+
+  onFavoriteBook(event: { id: string; liked: boolean }) {
+    const bookInd = this.listOfBooks.findIndex((book) => book._id === event.id);
+    if (bookInd !== -1) {
+      this.listOfBooks[bookInd].favorite = event.liked;
+      this.chunkedList = this.chunkArray(this.listOfBooks, this.columnAmount);
+    }
   }
 }
