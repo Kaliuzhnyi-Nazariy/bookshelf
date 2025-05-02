@@ -1,0 +1,91 @@
+.general {
+  background-color: var(--shelfcolor);
+  width: 660px;
+  height: 240px;
+
+  border-radius: 56px;
+
+  padding-top: 20px;
+  padding-bottom: 20px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.title {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+}
+
+.chat {
+  background-color: var(--insideShelf);
+  width: 100%;
+  height: 180px;
+  border-top: 1px solid var(--lettercolor);
+  border-bottom: 1px solid var(--lettercolor);
+  margin-top: 10px;
+
+  overflow-y: scroll;
+}
+
+.scroll-container {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+/* Add the scrollbar styles as shown above */
+.scroll-container::-webkit-scrollbar {
+  width: 8px;
+}
+
+.scroll-container::-webkit-scrollbar-track {
+  background: var(--insideShelf);
+}
+
+.scroll-container::-webkit-scrollbar-thumb {
+  background: var(--insideShelf);
+  color: var(--shelfcolor);
+  /* border-radius: 10px; */
+  border-radius: 25%;
+}
+
+.scroll-container::-webkit-scrollbar-thumb:hover {
+  background: var(--insideShelf);
+}
+
+.scroll-container {
+  scrollbar-width: thin;
+  scrollbar-color: var(--shelfcolor) var(--insideShelf);
+}
+
+.button {
+  margin-top: 10px;
+  width: 310px;
+
+  padding: 5px 60px;
+  border-radius: 20px;
+
+  background-color: var(--updBtncolor);
+
+  color: var(--lettercolor);
+  font-family: "Mogra", Courier, monospace;
+  font-size: 20px;
+  border: 3px solid transparent;
+  transition: all 250ms;
+  &:hover,
+  &:active {
+    transform: scale(1.1);
+  }
+}
+
+.answer {
+  width: 96%;
+  border-bottom: 1px solid var(--lettercolor);
+  text-wrap: wrap;
+  word-break: break-all;
+
+  padding: 8px 12px;
+}
