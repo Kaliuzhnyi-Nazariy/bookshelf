@@ -1,0 +1,11 @@
+<div class="book" (click)="openUpdModal()">
+  <button class="favoriteButton" (click)="onFavorite($event)">
+    <mat-icon style="color: red">{{ emoji() }}</mat-icon>
+  </button>
+  @if(bookCover) {
+  <img [src]="bookCover" alt="" />
+  } @else {
+  <h3>{{ bookTitle }}</h3>
+  <p>{{ bookCover }}</p>
+  }
+</div>

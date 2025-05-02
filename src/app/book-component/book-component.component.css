@@ -1,0 +1,25 @@
+.book {
+  position: relative;
+  height: 150px;
+  width: 80px;
+  font-size: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.favoriteButton {
+  position: absolute;
+  top: 5px;
+  right: 1px;
+  border: transparent;
+  background: none;
+
+  transition: all 250ms;
+
+  &:hover,
+  :active {
+    transform: scale(1.1);
+  }
+}
