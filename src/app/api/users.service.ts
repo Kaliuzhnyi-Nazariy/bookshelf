@@ -19,7 +19,6 @@ export class UsersService {
   private authService = inject(AuthService);
 
   checkIfLogged(): Observable<ICreatedUser> | void {
-    console.log(document.cookie.includes('accessToken'));
     if (!document.cookie.includes('accessToken')) {
       return;
     }
