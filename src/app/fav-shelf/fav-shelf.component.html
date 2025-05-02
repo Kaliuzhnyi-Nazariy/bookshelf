@@ -1,10 +1,27 @@
 <div class="generalShelfStyle">
-  <h3 class="shelfName">Favorite</h3>
-  <span class="insideShelf scroll-container">
-    @for(n of listForTest; track n ) {
-    <div class="lineOfShelf">{{ n }}</div>
-    } @for(filler of fillers; track filler) {
-    <div class="lineOfShelf"></div>
+  <h3 class="shelfName">Favorite Books</h3>
+  <table class="tableShelf scroll-container">
+    <tr style="width: 575px; visibility: collapse">
+      <th tyle="width: 80px">Column 1</th>
+      <th tyle="width: 80px">Column 2</th>
+      <th tyle="width: 80px">Column 3</th>
+      <th tyle="width: 80px">Column 4</th>
+      <th tyle="width: 80px">Column 5</th>
+      <th tyle="width: 80px">Column 6</th>
+      <th tyle="width: 80px">Column 7</th>
+      <th tyle="width: 80px">Column 8</th>
+    </tr>
+    @if(listOfFavBooks.length > 0){ @for (row of chunkedList; track $index) {
+    <tr class="tableRow">
+      @for (item of row; track $index) {
+      <td class="tableCell" align="center">
+        <app-book-component [allItem]="item" />
+      </td>
+
+      }
+    </tr>
+    } }@else {
+    <p class="noDataMessage">No data</p>
     }
-  </span>
+  </table>
 </div>
