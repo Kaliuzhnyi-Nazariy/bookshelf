@@ -27,7 +27,6 @@ export class UserPanelComponent implements AfterViewInit, OnInit {
 
   ngOnInit(): void {
     this.userService.checkIfLogged()?.subscribe();
-    console.log(this.userName);
   }
 
   ngAfterViewInit(): void {
