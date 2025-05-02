@@ -1,3 +1,86 @@
-<p style="color: black">{{ itemName() }}</p>
-<p style="color: black">Hello</p>
-<button (click)="onSubmit()">check</button>
+<div class="general">
+  <h3>Update book</h3>
+  <form [formGroup]="updBookForm" (ngSubmit)="onSubmit()" class="form">
+    <mat-form-field apperance="fill" class="title">
+      <mat-label>Title</mat-label>
+      <input
+        matInput
+        placeholder="Book"
+        formControlName="title"
+        (blur)="updateTitleErrMessage()"
+        required
+      />
+      @if(titleErrMessage()){
+      <mat-error>Title: {{ titleErrMessage() }}</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field apperance="fill" class="author">
+      <mat-label>Author</mat-label>
+      <input
+        matInput
+        placeholder="Author"
+        formControlName="author"
+        (blur)="updateAuthorErrMessage()"
+        required
+      />
+      @if(authorErrMessage()){
+      <mat-error>Author: {{ authorErrMessage() }}</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field apperance="fill" class="DAO">
+      <mat-label>Description and opinion</mat-label>
+      <textarea
+        matInput
+        placeholder="Description and opinion"
+        formControlName="descripionAndOpinion"
+        (blur)="updateDAOErrMessage()"
+        style="resize: none; height: 180px"
+      ></textarea>
+      @if(DAOErrMessage()) {
+      <mat-error>Description and opinion: {{ DAOErrMessage() }}</mat-error>
+      }
+    </mat-form-field>
+
+    <!-- <input
+      type="file"
+      accept=".jpg, .png"
+      class="file"
+      (change)="uploadPhoto($event)"
+    /> -->
+
+    <div class="file-input">
+      @if(imagePreview()) {
+      <img [src]="imagePreview()" alt="preview" class="image" />
+      <input
+        type="file"
+        accept=".jpg, .png"
+        class="file-withbgc"
+        (change)="uploadPhoto($event)"
+      />
+      } @else {
+      <input
+        type="file"
+        accept=".jpg, .png"
+        class="file"
+        (change)="uploadPhoto($event)"
+      />
+      }
+    </div>
+    @if(imageErrMessage()) {
+    <mat-error>Image: {{ imageErrMessage() }}</mat-error>
+    } @if(imageName()) {
+    <p class="imageName">{{ imageName() }}</p>
+    } @if(isLoading()) {
+    <span>Loading...</span>
+    } @else {
+    <button type="submit" class="button upd">Update</button>
+    <button type="button" class="button del" (click)="deleteBook()">
+      Delete
+    </button>
+    } @if(reqErrMessage()){
+    <mat-error>{{ reqErrMessage() }}</mat-error>
+    }
+  </form>
+</div>
