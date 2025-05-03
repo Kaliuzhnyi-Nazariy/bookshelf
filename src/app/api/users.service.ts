@@ -19,30 +19,72 @@ export class UsersService {
 
   private authService = inject(AuthService);
 
-  checkIfLogged(): Observable<ICreatedUser> | void {
-    if (!document.cookie.includes('accessToken')) {
-      return;
-    }
+  // checkIfLogged(): Observable<ICreatedUser> | void {
+  //   if (!document.cookie.includes('accessToken')) {
+  //     return;
+  //   }
+
+  //   const accessToken = at();
+
+  //   const headers = new HttpHeaders({
+  //     'Content-Type': 'application/json',
+  //     Authorization: `Bearer ${accessToken}`,
+  //   });
+
+  //   return this.http
+  //     .get<ICreatedUser>(`${this.baseURL}/me`, {
+  //       headers,
+  //     })
+  //     .pipe(
+  //       tap((res) => {
+  //         this.authService.setUserData(res);
+  //         this.userName.set(res.name);
+  //         this.userEmail.set(res.email);
+  //         this.authService.setAuthStat(true);
+  //       })
+  //     );
+  // }
+
+  async checkIfLogged() {
+    // if (!document.cookie.includes('accessToken')) {
+    //   return;
+    // }
 
     const accessToken = at();
 
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${accessToken}`,
+    // const headers = new HttpHeaders({
+    //   'Content-Type': 'application/json',
+    //   Authorization: `Bearer ${accessToken}`,
+    // });
+
+    const request = await fetch(`${this.baseURL}/me`, {
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+      },
     });
 
-    return this.http
-      .get<ICreatedUser>(`${this.baseURL}/me`, {
-        headers,
-      })
-      .pipe(
-        tap((res) => {
-          this.authService.setUserData(res);
-          this.userName.set(res.name);
-          this.userEmail.set(res.email);
-          this.authService.setAuthStat(true);
-        })
-      );
+    const data = await request.json();
+
+    console.log('data info: ', data);
+
+    this.authService.setUserData(data);
+    this.userName.set(data.name);
+    this.userEmail.set(data.email);
+    this.authService.setAuthStat(true);
+
+    // return this.http
+    //   .get<ICreatedUser>(`${this.baseURL}/me`, {
+    //     headers,
+    //   })
+    //   .pipe(
+    //     tap((res) => {
+    //       this.authService.setUserData(res);
+    // this.userName.set(res.name);
+    // this.userEmail.set(res.email);
+    // this.authService.setAuthStat(true);
+    //     })
+    //   );
   }
 
   updateUserData(dto: IUpdUser): Observable<IUpdUserReturn> {

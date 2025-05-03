@@ -8,8 +8,8 @@ import { accessToken as at } from './helper';
   providedIn: 'root',
 })
 export class AuthService {
-  private baseURL = 'https://bookshelf-api-8c76.onrender.com/auth';
-  // private baseURL = 'http://localhost:3500/auth';
+  // private baseURL = 'https://bookshelf-api-8c76.onrender.com/auth';
+  private baseURL = 'http://localhost:3500/auth';
 
   private http = inject(HttpClient);
 
@@ -60,22 +60,40 @@ export class AuthService {
       );
   }
 
-  signIn(dto: ISignIn): Observable<ICreatedUser> {
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-    });
+  // signIn(dto: ISignIn): Observable<ICreatedUser> {
+  //   const headers = new HttpHeaders({
+  // 'Content-Type': 'application/json',
+  //   });
 
-    return this.http
-      .post<ICreatedUser>(`${this.baseURL}/signin`, dto, {
-        headers,
-        withCredentials: true,
-      })
-      .pipe(
-        tap((res) => {
-          this.setAuthStat(true);
-          this.setUserData(res);
-        })
-      );
+  //   return this.http
+  //     .post<ICreatedUser>(`${this.baseURL}/signin`, dto, {
+  //       headers,
+  //       withCredentials: true,
+  //     })
+  //     .pipe(
+  //       tap((res) => {
+  //         this.setAuthStat(true);
+  //         this.setUserData(res);
+  //       })
+  //     );
+  // }
+
+  async signIn(dto: ISignIn) {
+    try {
+      const answer = await fetch(`${this.baseURL}/signin`, {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(dto),
+      });
+      const data = await answer.json();
+
+      return data;
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   logout(): Observable<void> {
