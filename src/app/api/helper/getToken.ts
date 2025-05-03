@@ -3,6 +3,6 @@ import { startWith } from 'rxjs';
 export const accessToken = () => {
   return document.cookie
     .split('; ')
-    .find((row) => row, startWith('accessToken='))
+    .find((cookie) => cookie.startsWith('accessToken='))
     ?.split('=')[1];
 };
