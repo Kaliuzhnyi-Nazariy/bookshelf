@@ -8,7 +8,8 @@ import { AddBook, Book } from '../dtos';
   providedIn: 'root',
 })
 export class BookService {
-  private baseURL = 'http://localhost:3500/book';
+  // private baseURL = 'http://localhost:3500/book';
+  private baseURL = 'https://bookshelf-api-8c76.onrender.com/book';
 
   private http = inject(HttpClient);
 

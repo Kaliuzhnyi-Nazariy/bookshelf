@@ -6,7 +6,8 @@ import { accessToken as at } from './helper';
   providedIn: 'root',
 })
 export class AiService {
-  private URL = 'http://localhost:3500/ai';
+  // private URL = 'http://localhost:3500/ai';
+  private URL = 'https://bookshelf-api-8c76.onrender.com/ai';
 
   private http = inject(HttpClient);
 
