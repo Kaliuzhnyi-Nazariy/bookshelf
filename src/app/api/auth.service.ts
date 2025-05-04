@@ -22,6 +22,7 @@ export class AuthService {
   setAuthStat(val: boolean) {
     this.loggedIn.next(val);
   }
+
   private user = new Subject<ICreatedUser>();
 
   get userData(): Observable<ICreatedUser> {
