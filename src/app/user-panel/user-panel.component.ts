@@ -26,7 +26,7 @@ export class UserPanelComponent implements AfterViewInit, OnInit {
   errReqMessage = signal('');
 
   ngOnInit(): void {
-    this.userService.checkIfLogged()?.subscribe();
+    this.userService.checkIfLogged();
   }
 
   ngAfterViewInit(): void {
