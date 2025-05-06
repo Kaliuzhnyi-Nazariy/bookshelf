@@ -27,16 +27,59 @@ export class UserPanelComponent implements AfterViewInit, OnInit {
 
   ngOnInit(): void {
     this.userService.checkIfLogged();
+
+    this.authService.authStatus.subscribe((status) => {
+      this.isLoggedIn = status;
+      if (status) {
+        this.authService.userData.subscribe({
+          next: (val) => {
+            if (val) {
+              this.userName = val.name;
+              this.userEmail = val.email;
+            }
+          },
+        });
+      }
+    });
+
+    // this.isLoggedIn = this.authService.authStatus;
+    // this.authService.userData.subscribe({
+    //   next: (val) => {
+    //     if (val) {
+    //       this.userName = val.name;
+    //       this.userEmail = val.email;
+    //     }
+    //   },
+    // });
   }
 
   ngAfterViewInit(): void {
     this.authService.authStatus.subscribe((status) => {
       this.isLoggedIn = status;
+      if (status) {
+        this.authService.userData.subscribe({
+          next: (val) => {
+            if (val) {
+              console.log({ status }, val);
+              this.userName = val.name;
+              this.userEmail = val.email;
+            }
+          },
+        });
+      }
     });
-    this.authService.userData.subscribe((data) => {
-      this.userName = data.name;
-      this.userEmail = data.email;
-    });
+    // this.isLoggedIn = this.authService.authStatus;
+    // console.log('this.authService.authStatus: ', this.authService.authStatus);
+    // if (this.isLoggedIn) {
+    //   this.authService.userData.subscribe({
+    //     next: (val) => {
+    //       if (val) {
+    //         this.userName = val.name;
+    //         this.userEmail = val.email;
+    //       }
+    //     },
+    //   });
+    // }
   }
 
   public allAmountOfBooks: number = 17;
@@ -67,8 +110,6 @@ export class UserPanelComponent implements AfterViewInit, OnInit {
   }
 
   logout(): void {
-    this.authService.logout().subscribe({
-      next: () => {},
-    });
+    this.authService.logout();
   }
 }

@@ -3,6 +3,7 @@ import { Book } from '../dtos';
 import { BookService } from '../api/book.service';
 import { MatDialog } from '@angular/material/dialog';
 import { BookComponent } from '../book-component/book-component.component';
+import { AuthService } from '../api';
 
 @Component({
   selector: 'app-fav-shelf',
@@ -16,7 +17,13 @@ export class FavShelfComponent {
   public chunkedList: Book[][] = [];
   private columnAmount = 7;
 
-  constructor(private bookService: BookService, public dialog: MatDialog) {
+  isLoggedIn = signal(false);
+
+  constructor(
+    private bookService: BookService,
+    public dialog: MatDialog,
+    private authService: AuthService
+  ) {
     effect(() => {
       const books = this.bookService.books();
       this.listOfBooks = books;
@@ -24,6 +31,9 @@ export class FavShelfComponent {
         (book) => book.favorite === true
       );
       this.chunkedList = this.chunkArray(this.listOfBooks, this.columnAmount);
+    });
+    this.authService.authStatus.subscribe({
+      next: (val) => this.isLoggedIn.set(val),
     });
   }
 

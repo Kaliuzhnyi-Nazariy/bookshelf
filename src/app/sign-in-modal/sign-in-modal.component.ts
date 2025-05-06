@@ -66,9 +66,11 @@ export class SignInModalComponent {
       if (this.signinForm.valid) {
         this.authService.signIn(this.signinForm.value);
         this.isLoading = false;
+        this.dialog.close();
+
         // this.authService.signIn(this.signinForm.value).subscribe({
         //   next: () => {
-        //     this.dialog.close();
+        // this.dialog.close();
         //   },
         //   error: (err) => {
         //     this.isLoading = false;

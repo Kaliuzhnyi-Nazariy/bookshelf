@@ -73,18 +73,10 @@ export class UpdModalComponent {
       this.isLoading.set(true);
       this.errReqMessage.set('');
       if (this.updForm.valid) {
-        this.usersService.updateUserData(this.updForm.value).subscribe({
-          next: () => {
-            this.isLoading.set(false);
-            this.authService.setAuthStat(false);
-            this.dialog.close();
-          },
-          error: (err) => {
-            this.isLoading.set(false);
-            this.errReqMessage.set(err.error.message);
-            //need to sign new token and add it on Backend
-          },
-        });
+        this.usersService.updateUserData(this.updForm.value);
+        this.isLoading.set(false);
+        this.authService.setAuthStat(false);
+        this.dialog.close();
       } else {
         this.isLoading.set(false);
       }

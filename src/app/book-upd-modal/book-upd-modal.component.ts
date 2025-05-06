@@ -125,25 +125,8 @@ export class BookUpdModalComponent {
     this.updBookForm.get('image')?.updateValueAndValidity();
   }
 
-  // updateBook() {
-  //   this.isLoading.set(true);
-  //   this.reqErrMessage.set('');
-
-  //   if (this.updBookForm.valid) {
-  //     const formData = new FormData();
-
-  //     formData.append('title', this.updBookForm.value.title);
-  //     formData.append('author', this.updBookForm.value.author);
-  //     formData.append('author', this.updBookForm.value.author);
-  //   }
-
-  //   this.bookService.updateBook(this.updBookForm.value, this.data._id);
-
-  //   this.isLoading.set(false);
-  //   this.dialog.close();
-  // }
-
   deleteBook(): void {
+    this.isLoading.set(true);
     this.bookService.deleteBook(this.data._id);
     this.isLoading.set(false);
     this.dialog.close();

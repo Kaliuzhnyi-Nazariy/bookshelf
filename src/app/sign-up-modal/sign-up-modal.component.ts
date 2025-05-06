@@ -90,15 +90,17 @@ export class SignUpModalComponent {
       this.isLoading = true;
       this.errorReqMessage.set('');
       if (this.signupForm.valid) {
-        this.service.signUp(this.signupForm.value).subscribe({
-          next: () => {
-            this.dialog.close();
-          },
-          error: (err) => {
-            this.isLoading = false;
-            this.errorReqMessage.set(err.error.message);
-          },
-        });
+        this.service.signUp(this.signupForm.value);
+        this.dialog.close();
+        // this.service.signUp(this.signupForm.value).subscribe({
+        //   next: () => {
+        //     this.dialog.close();
+        //   },
+        //   error: (err) => {
+        //     this.isLoading = false;
+        //     this.errorReqMessage.set(err.error.message);
+        //   },
+        // });
       } else {
         this.isLoading = false;
       }

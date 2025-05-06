@@ -24,16 +24,8 @@ export class DelModalComponent {
   deleteUser(): void {
     this.isLoading.set(true);
     try {
-      this.userService.deleteUser()?.subscribe({
-        next: () => {
-          this.isLoading.set(false);
-          this.dialog.close(); // Close the modal on success
-        },
-        error: (err) => {
-          this.isLoading.set(false);
-          this.reqErrMessage.set(err.error.message);
-        },
-      });
+      this.userService.deleteUser();
+      this.closeModal();
     } catch (error) {
       console.error(error);
     }

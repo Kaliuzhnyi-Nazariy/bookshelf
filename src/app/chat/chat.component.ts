@@ -1,5 +1,5 @@
 import { Component, computed, effect, OnInit, signal } from '@angular/core';
-import { AiService } from '../api';
+import { AiService, AuthService } from '../api';
 import { BookService } from '../api/book.service';
 import { Book } from '../dtos';
 import { CommonModule } from '@angular/common';
@@ -19,7 +19,13 @@ export class ChatComponent implements OnInit {
 
   isLoading = signal(false);
 
-  constructor(private AIService: AiService, private bookService: BookService) {
+  isLoggedIn = signal(false);
+
+  constructor(
+    private AIService: AiService,
+    private bookService: BookService,
+    private authService: AuthService
+  ) {
     effect(() => {
       this.books = this.bookService.books();
       this.favoriteBooks.set(
@@ -27,6 +33,9 @@ export class ChatComponent implements OnInit {
       );
       this.answers.set(this.AIService.answers());
       this.isLoading.set(this.AIService.isLoading());
+    });
+    this.authService.authStatus.subscribe({
+      next: (val) => this.isLoggedIn.set(val),
     });
   }
 

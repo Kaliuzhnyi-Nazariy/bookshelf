@@ -5,6 +5,7 @@ import { BookService } from '../api/book.service';
 import { AddBookModalComponent } from '../add-book-modal/add-book-modal.component';
 import { Book } from '../dtos';
 import { BookComponent } from '../book-component/book-component.component';
+import { AuthService } from '../api';
 
 @Component({
   selector: 'app-shelf',
@@ -19,15 +20,26 @@ export class ShelfComponent implements OnInit {
   public chunkedList: Book[][] = [];
   private columnAmount = 7;
 
+  isLoggedIn = signal(false);
+
   isLoading = signal(false);
   errorFetch = signal('');
 
-  constructor(public dialog: MatDialog, private bookService: BookService) {
+  constructor(
+    public dialog: MatDialog,
+    private bookService: BookService,
+    private authService: AuthService
+  ) {
     effect(() => {
       this.listOfBooks = this.bookService.books();
       this.chunkedList = this.chunkArray(this.listOfBooks, this.columnAmount);
     });
+    this.authService.authStatus.subscribe({
+      next: (val) => this.isLoggedIn.set(val),
+    });
+    // this.isLoggedIn.set(this.authService.authStatus);
   }
+
   ngOnInit(): void {
     this.bookService.getBooks();
   }
