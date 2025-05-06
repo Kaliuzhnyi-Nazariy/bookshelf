@@ -1,17 +1,13 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { ICreatedUser, ISignIn, ISignUp } from '../dtos';
 import { BehaviorSubject, Observable, startWith, Subject, tap } from 'rxjs';
-import { accessToken as at } from './helper';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  // private baseURL = 'https://bookshelf-api-8c76.onrender.com/auth';
-  private baseURL = 'http://localhost:3500/auth';
-
-  private http = inject(HttpClient);
+  private baseURL = 'https://bookshelf-api-8c76.onrender.com/auth';
+  // private baseURL = 'http://localhost:3500/auth';
 
   private loggedIn = new BehaviorSubject<boolean>(false);
 
@@ -23,14 +19,11 @@ export class AuthService {
     this.loggedIn.next(val);
   }
 
-  private user = new Subject<ICreatedUser>();
+  private user = new BehaviorSubject<ICreatedUser | null>(null);
+  userData = this.user.asObservable();
 
-  get userData(): Observable<ICreatedUser> {
-    return this.user.asObservable();
-  }
-
-  setUserData(userData: ICreatedUser) {
-    this.user.next(userData);
+  setUserData(data: ICreatedUser) {
+    this.user.next(data);
   }
 
   clearUserData() {
@@ -43,41 +36,29 @@ export class AuthService {
     });
   }
 
-  signUp(dto: ISignUp): Observable<ICreatedUser> {
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-    });
+  async signUp(dto: ISignUp) {
+    try {
+      const request = await fetch(`${this.baseURL}/signup`, {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(dto),
+      });
 
-    return this.http
-      .post<ICreatedUser>(`${this.baseURL}/signup`, dto, {
-        headers,
-        withCredentials: true,
-      })
-      .pipe(
-        tap((response) => {
-          this.setAuthStat(true);
-          this.setUserData(response);
-        })
-      );
+      const data = await request.json();
+      if (data) {
+        this.setAuthStat(true);
+      }
+      location.reload();
+
+      return data;
+    } catch (error) {
+      console.error(error);
+      this.setAuthStat(false);
+    }
   }
-
-  // signIn(dto: ISignIn): Observable<ICreatedUser> {
-  //   const headers = new HttpHeaders({
-  // 'Content-Type': 'application/json',
-  //   });
-
-  //   return this.http
-  //     .post<ICreatedUser>(`${this.baseURL}/signin`, dto, {
-  //       headers,
-  //       withCredentials: true,
-  //     })
-  //     .pipe(
-  //       tap((res) => {
-  //         this.setAuthStat(true);
-  //         this.setUserData(res);
-  //       })
-  //     );
-  // }
 
   async signIn(dto: ISignIn) {
     try {
@@ -90,30 +71,53 @@ export class AuthService {
         body: JSON.stringify(dto),
       });
       const data = await answer.json();
+      if (data) {
+        console.log(data);
+        this.setAuthStat(true);
+      }
 
+      location.reload();
       return data;
     } catch (error) {
       console.error(error);
+      this.setAuthStat(false);
     }
   }
 
-  logout(): Observable<void> {
-    const accessToken = at();
-
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${accessToken}`,
-    });
-
-    return this.http
-      .delete<void>(`${this.baseURL}/logout`, {
-        headers,
-        withCredentials: true,
-      })
-      .pipe(
-        tap(() => {
-          this.setAuthStat(false);
-        })
-      );
+  async logout() {
+    try {
+      await fetch(`${this.baseURL}/logout`, {
+        method: 'DELETE',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      this.setAuthStat(false);
+      location.reload();
+    } catch (error) {
+      console.error(error);
+      this.setAuthStat(false);
+    }
   }
+
+  // logout(): Observable<void> {
+  //   const accessToken = at();
+
+  //   const headers = new HttpHeaders({
+  //     'Content-Type': 'application/json',
+  //     Authorization: `Bearer ${accessToken}`,
+  //   });
+
+  //   return this.http
+  //     .delete<void>(`${this.baseURL}/logout`, {
+  //       headers,
+  //       withCredentials: true,
+  //     })
+  //     .pipe(
+  //       tap(() => {
+  //         this.setAuthStat(false);
+  //       })
+  //     );
+  // }
 }

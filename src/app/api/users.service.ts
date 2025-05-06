@@ -1,9 +1,6 @@
 import { inject, Injectable, signal } from '@angular/core';
-import { Observable, startWith, tap } from 'rxjs';
 import { ICreatedUser, IUpdUser, IUpdUserReturn } from '../dtos';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AuthService } from './auth.service';
-import { accessToken as at } from './helper';
 
 @Injectable({
   providedIn: 'root',
@@ -12,112 +9,72 @@ export class UsersService {
   userName = signal('');
   userEmail = signal('');
 
-  // private baseURL = 'https://bookshelf-api-8c76.onrender.com/users';
-  private baseURL = 'http://localhost:3500/users';
-
-  private http = inject(HttpClient);
+  private baseURL = 'https://bookshelf-api-8c76.onrender.com/users';
+  // private baseURL = 'http://localhost:3500/users';
 
   private authService = inject(AuthService);
 
-  // checkIfLogged(): Observable<ICreatedUser> | void {
-  //   if (!document.cookie.includes('accessToken')) {
-  //     return;
-  //   }
-
-  //   const accessToken = at();
-
-  //   const headers = new HttpHeaders({
-  //     'Content-Type': 'application/json',
-  //     Authorization: `Bearer ${accessToken}`,
-  //   });
-
-  //   return this.http
-  //     .get<ICreatedUser>(`${this.baseURL}/me`, {
-  //       headers,
-  //     })
-  //     .pipe(
-  //       tap((res) => {
-  //         this.authService.setUserData(res);
-  //         this.userName.set(res.name);
-  //         this.userEmail.set(res.email);
-  //         this.authService.setAuthStat(true);
-  //       })
-  //     );
-  // }
-
   async checkIfLogged() {
-    // if (!document.cookie.includes('accessToken')) {
-    //   return;
-    // }
+    try {
+      const request = await fetch(`${this.baseURL}/me`, {
+        method: 'GET',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
 
-    const accessToken = at();
+      if (!request) return this.authService.setAuthStat(false);
 
-    // const headers = new HttpHeaders({
-    //   'Content-Type': 'application/json',
-    //   Authorization: `Bearer ${accessToken}`,
-    // });
+      const data = await request.json();
 
-    const request = await fetch(`${this.baseURL}/me`, {
-      credentials: 'include',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
+      if (data?.message) return this.authService.setAuthStat(false);
 
-    const data = await request.json();
-
-    console.log('data info: ', data);
-
-    this.authService.setUserData(data);
-    this.userName.set(data.name);
-    this.userEmail.set(data.email);
-    this.authService.setAuthStat(true);
-
-    // return this.http
-    //   .get<ICreatedUser>(`${this.baseURL}/me`, {
-    //     headers,
-    //   })
-    //   .pipe(
-    //     tap((res) => {
-    //       this.authService.setUserData(res);
-    // this.userName.set(res.name);
-    // this.userEmail.set(res.email);
-    // this.authService.setAuthStat(true);
-    //     })
-    //   );
+      this.authService.setUserData(data);
+      this.userName.set(data.name);
+      this.userEmail.set(data.email);
+      return this.authService.setAuthStat(true);
+    } catch (error) {
+      console.log({ error });
+      return this.authService.setAuthStat(false);
+    }
   }
 
-  updateUserData(dto: IUpdUser): Observable<IUpdUserReturn> {
-    const accessToken = at();
+  async updateUserData(dto: IUpdUser) {
+    try {
+      const request = await fetch(`${this.baseURL}`, {
+        method: 'PUT',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(dto),
+      });
 
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${accessToken}`,
-    });
-
-    return this.http.put<IUpdUserReturn>(`${this.baseURL}`, dto, { headers });
+      const data = await request.json();
+      return data;
+    } catch (error) {
+      console.error(error);
+    }
   }
 
-  deleteUser(): Observable<void> | void {
-    const accessToken = at();
+  async deleteUser() {
+    try {
+      const request = await fetch(`${this.baseURL}`, {
+        method: 'DELETE',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+      });
 
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${accessToken}`,
-    });
+      const data = await request.json();
 
-    return this.http
-      .delete<void>(`${this.baseURL}`, {
-        headers,
-        withCredentials: true,
-      })
-      .pipe(
-        tap(() => {
-          this.authService.setAuthStat(false);
-          this.authService.clearUserData();
-          this.userName.set('');
-          this.userEmail.set('');
-        })
-      );
+      if (data.message) return;
+      this.authService.setAuthStat(false);
+      this.authService.clearUserData();
+      this.userName.set('');
+      this.userEmail.set('');
+    } catch (error) {
+      console.error(error);
+    }
   }
 }
