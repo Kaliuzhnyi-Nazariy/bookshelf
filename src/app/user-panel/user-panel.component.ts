@@ -1,10 +1,17 @@
-import { AfterViewInit, Component, OnInit, signal } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  effect,
+  OnInit,
+  signal,
+} from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { SignUpModalComponent } from '../sign-up-modal/sign-up-modal.component';
 import { AuthService, UsersService } from '../api';
 import { SignInModalComponent } from '../sign-in-modal/sign-in-modal.component';
 import { DelModalComponent } from '../del-modal/del-modal.component';
 import { UpdModalComponent } from '../upd-modal/upd-modal.component';
+import { BookService } from '../api/book.service';
 
 @Component({
   selector: 'app-user-panel',
@@ -16,12 +23,19 @@ export class UserPanelComponent implements AfterViewInit, OnInit {
   constructor(
     private dialog: MatDialog,
     private authService: AuthService,
-    private userService: UsersService
-  ) {}
+    private userService: UsersService,
+    private bookService: BookService
+  ) {
+    effect(() => {
+      this.allAmountOfBooks = this.bookService.allBooksAmount();
+    });
+  }
 
   isLoggedIn = false;
   userName: string = '';
   userEmail: string = '';
+
+  allAmountOfBooks: number | null = null;
 
   errReqMessage = signal('');
 
@@ -82,8 +96,6 @@ export class UserPanelComponent implements AfterViewInit, OnInit {
     // }
   }
 
-  public allAmountOfBooks: number = 17;
-
   openSignUpModal(): void {
     this.dialog.open(SignUpModalComponent, {
       width: '300px',
@@ -100,12 +112,12 @@ export class UserPanelComponent implements AfterViewInit, OnInit {
 
   openUpdModal(): void {
     this.dialog.open(UpdModalComponent, {
-      width: '350px',
+      width: '300px',
     });
   }
   openDelModal(): void {
     this.dialog.open(DelModalComponent, {
-      width: '350px',
+      width: '300px',
     });
   }
 
