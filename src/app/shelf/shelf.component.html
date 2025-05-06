@@ -24,6 +24,9 @@
     </tr>
     }
   </table>
+  @if(!isLoggedIn()) {
+  <div class="notEntered"></div>
+  }
 </div>
 <!-- (favoriteToggled)="onFavoriteBook($event)" -->
 

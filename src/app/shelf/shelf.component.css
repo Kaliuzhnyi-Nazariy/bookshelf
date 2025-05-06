@@ -1,10 +1,17 @@
 .generalShelfStyle {
+  position: relative;
   background-color: var(--shelfcolor);
-  width: 570px;
+  width: 270px;
   height: 250px;
+
   padding: 15px;
   /* margin-top: 25px; */
   /* margin-left: 50px; */
+
+  @media screen and (min-width: 768px) {
+    width: 570px;
+    height: 250px;
+  }
 }
 
 .shelfName {
@@ -16,6 +23,7 @@
 }
 
 .tableShelf {
+  position: relative;
   background-color: var(--insideShelf);
   height: 220px;
   width: 575px;
@@ -26,7 +34,10 @@
   overflow-y: scroll;
 
   border-spacing: 0 15px;
-  overflow-x: hidden;
+
+  @media screen and (min-width: 768px) {
+    overflow-x: hidden;
+  }
 }
 
 tbody {
@@ -87,6 +98,7 @@ tbody {
 }
 
 .shelf {
+  position: relative;
   display: grid;
   grid-template-columns: repeat(7, 1fr); /* 7 columns */
   gap: 10px;
@@ -109,4 +121,21 @@ tbody {
 
 button {
   border: transparent;
+}
+
+.notEntered {
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  backdrop-filter: blur(10px);
+  background-color: rgba(255, 255, 255, 0.3);
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
 }
