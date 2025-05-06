@@ -3,11 +3,16 @@
   /* display: flex;
   flex-direction: column;
   justify-content: center; */
-  align-items: center;
+  /* align-items: center; */
   padding: 16px;
   min-height: 410px;
-  width: 800px;
+  min-width: 270px;
+  /* width: 800px; */
   overflow-x: hidden;
+
+  @media screen and (min-width: 768px) {
+    min-width: 600px;
+  }
 }
 
 h3 {
@@ -17,43 +22,60 @@ h3 {
 
 .form {
   margin-top: 16px;
-  /* display: flex; */
-  /* flex-direction: column;
-  justify-content: center;
-  align-items: center; */
 
-  display: grid;
-  /* grid-template-rows: repeat(6, 1fr); */
-  grid-auto-rows: auto;
-  grid-template-columns: repeat(4, 1fr);
-  grid-template-areas:
-    "p p n a"
-    "p p d d"
-    "pi pi b b"
-    "re re re re";
-  /* ". . en ea"
-    "p p d d"
-    "ep ep dn dn"
-    "re re re re"; */
-  width: 100%;
-  max-width: 800px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  @media screen and (min-width: 768px) {
+    display: grid;
+    grid-auto-rows: auto;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-areas:
+      "n a"
+      "p d"
+      "pi b"
+      "re re";
+
+    width: 100%;
+    max-width: 600px;
+  }
+
+  @media screen and (min-width: 1440px) {
+    display: grid;
+    grid-auto-rows: auto;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-areas:
+      "p p n a"
+      "p p d d"
+      "pi pi b b"
+      "re re re re";
+
+    width: 100%;
+    max-width: 800px;
+  }
 }
 
 .title {
   grid-area: n;
   width: 95%;
   justify-self: center;
+  align-items: center;
 }
 
 .author {
   grid-area: a;
   width: 95%;
   justify-self: center;
+  align-items: center;
 }
 
 .DAO {
   grid-area: d;
   width: 100%;
+  justify-content: center;
+  align-items: center;
 }
 
 .button {
@@ -82,6 +104,18 @@ mat-error {
 
 .file-field {
   grid-area: p;
+  width: 240px;
+
+  justify-self: center;
+  align-self: center;
+
+  @media screen and (min-width: 768px) {
+    width: 260px;
+  }
+
+  @media screen and (min-width: 1440px) {
+    width: 300px;
+  }
   /* width: 50%;
   height: 50%; */
 }
@@ -92,12 +126,11 @@ mat-error {
 }
 
 .file {
-  width: 90%;
-  align-self: center;
   justify-self: center;
-  height: 85%;
-  /* width: 210px; */
-  /*height: 50px; */
+  align-self: center;
+
+  width: 240px;
+  height: 105px;
   border: 3px dashed var(--insideShelf);
   border-radius: 25px;
 
@@ -113,12 +146,22 @@ mat-error {
   :active {
     border: 3px dashed var(--borderHover);
   }
+
+  @media screen and (min-width: 768px) {
+    width: 260px;
+    height: 155px;
+  }
+
+  @media screen and (min-width: 1440px) {
+    width: 300px;
+    height: 240px;
+  }
 }
 
 .file::before {
   content: "+ Add file (to 1MB)";
-  padding-left: 34%;
-  padding-top: 35%;
+  padding-left: 24%;
+  padding-top: 20%;
   display: inline-block;
 
   font-weight: 700;
@@ -126,6 +169,20 @@ mat-error {
   white-space: nowrap;
   -webkit-user-select: none;
   cursor: pointer;
+}
+
+@media screen and (min-width: 768px) {
+  .file::before {
+    padding-left: 28%;
+    padding-top: 28%;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .file::before {
+    padding-left: 32%;
+    padding-top: 38%;
+  }
 }
 
 .imageName {
@@ -142,4 +199,13 @@ mat-error {
 
 span {
   margin-top: 16px;
+}
+
+.input-field {
+  @media screen and (max-width: 1439px) {
+    width: 240px;
+    align-self: center;
+    justify-self: center;
+  }
+  /* width: 100%; */
 }

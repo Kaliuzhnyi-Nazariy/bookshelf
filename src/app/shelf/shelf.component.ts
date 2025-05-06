@@ -86,7 +86,7 @@ export class ShelfComponent implements OnInit {
     // this.modal.itemName.set(item);
     // this.dialog.open(AddBookModalComponent, { width: '300px' });
     const dialogRef = this.dialog.open(AddBookModalComponent, {
-      width: '832px',
+      minWidth: '300px',
       maxWidth: '832px',
     });
 

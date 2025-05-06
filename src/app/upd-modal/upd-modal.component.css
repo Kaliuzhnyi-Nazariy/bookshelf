@@ -8,6 +8,14 @@
   font-size: larger;
 }
 
+.form {
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
 .groupOfButtons {
   width: 100%;
   margin-top: 12px;
@@ -19,7 +27,14 @@
   width: 105px;
   height: 45px;
   border-radius: 15px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
   color: var(--lettercolor);
+  background-color: var(--shelfcolor);
+
   font-family: "Mogra", Courier, monospace;
   font-size: 20px;
   border: 3px solid transparent;
@@ -28,4 +43,12 @@
   &:active {
     transform: scale(1.1);
   }
+}
+
+mat-form-field {
+  max-width: 210px;
+}
+
+mat-error {
+  margin-top: 12px;
 }
