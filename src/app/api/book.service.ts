@@ -13,6 +13,8 @@ export class BookService {
 
   books = signal<Book[]>([]);
 
+  allBooksAmount = signal(0);
+
   isLoading = signal(false);
 
   token: string | undefined = accessToken();
@@ -31,6 +33,7 @@ export class BookService {
 
       const data = await request.json();
       this.books.set(data);
+      this.allBooksAmount.set(data.length);
       this.isLoading.set(false);
     } catch (error) {
       console.error(error);
@@ -50,6 +53,7 @@ export class BookService {
       const data = await request.json();
       const oldBooks = this.books();
       this.books.set([...oldBooks, data]);
+      this.allBooksAmount.set(this.allBooksAmount() + 1);
 
       this.isLoading.set(false);
     } catch (error) {
@@ -150,6 +154,8 @@ export class BookService {
         const fullList = this.books();
         const newList = fullList.filter((_book) => _book._id !== data._id);
         this.books.set(newList);
+        this.allBooksAmount.set(this.allBooksAmount() - 1);
+
         this.isLoading.set(false);
       }
     } catch (error) {
