@@ -85,12 +85,12 @@ export class SignUpModalComponent {
     return password === confirmPassword ? null : { passwordMismatch: true };
   }
 
-  onSubmit(): void {
+  async onSubmit() {
     try {
       this.isLoading = true;
       this.errorReqMessage.set('');
       if (this.signupForm.valid) {
-        this.service.signUp(this.signupForm.value);
+        await this.service.signUp(this.signupForm.value);
         this.dialog.close();
         // this.service.signUp(this.signupForm.value).subscribe({
         //   next: () => {

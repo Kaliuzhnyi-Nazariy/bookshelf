@@ -21,10 +21,10 @@ export class DelModalComponent {
     this.dialog.close();
   }
 
-  deleteUser(): void {
+  async deleteUser() {
     this.isLoading.set(true);
     try {
-      this.userService.deleteUser();
+      await this.userService.deleteUser();
       this.closeModal();
     } catch (error) {
       console.error(error);

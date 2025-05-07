@@ -113,7 +113,7 @@ export class AddBookModalComponent {
     this.dialog.close();
   }
 
-  onSubmit() {
+  async onSubmit() {
     this.isLoading.set(true);
     this.reqErrMessage.set('');
 
@@ -130,7 +130,7 @@ export class AddBookModalComponent {
         if (this.addBook.value.image) {
           formData.append('file', this.addBook.value.image);
         }
-        this.bookService.postBook(formData);
+        await this.bookService.postBook(formData);
         this.isLoading.set(false);
         this.dialog.close();
       } else {

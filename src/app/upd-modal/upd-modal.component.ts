@@ -68,12 +68,12 @@ export class UpdModalComponent {
     });
   }
 
-  onSubmit() {
+  async onSubmit() {
     try {
       this.isLoading.set(true);
       this.errReqMessage.set('');
       if (this.updForm.valid) {
-        this.usersService.updateUserData(this.updForm.value);
+        await this.usersService.updateUserData(this.updForm.value);
         this.isLoading.set(false);
         this.authService.setAuthStat(false);
         this.dialog.close();

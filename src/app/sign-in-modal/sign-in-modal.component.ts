@@ -58,13 +58,13 @@ export class SignInModalComponent {
     });
   }
 
-  onSubmit(): void {
+  async onSubmit() {
     try {
       this.isLoading = true;
       this.errorReqMessage.set('');
 
       if (this.signinForm.valid) {
-        this.authService.signIn(this.signinForm.value);
+        await this.authService.signIn(this.signinForm.value);
         this.isLoading = false;
         this.dialog.close();
 

@@ -125,14 +125,14 @@ export class BookUpdModalComponent {
     this.updBookForm.get('image')?.updateValueAndValidity();
   }
 
-  deleteBook(): void {
+  async deleteBook() {
     this.isLoading.set(true);
-    this.bookService.deleteBook(this.data._id);
+    await this.bookService.deleteBook(this.data._id);
     this.isLoading.set(false);
     this.dialog.close();
   }
 
-  onSubmit(): void {
+  async onSubmit() {
     this.isLoading.set(true);
     this.reqErrMessage.set('');
 
@@ -149,7 +149,7 @@ export class BookUpdModalComponent {
         if (this.updBookForm.value.image) {
           formData.append('file', this.updBookForm.value.image);
         }
-        this.bookService.updateBook(formData, this.data._id);
+        await this.bookService.updateBook(formData, this.data._id);
         this.isLoading.set(false);
         this.dialog.close();
       }
