@@ -47,7 +47,7 @@ export class BookComponent {
 
   openUpdModal() {
     this.dialog.open(BookUpdModalComponent, {
-      width: '832px',
+      minWidth: '300px',
       maxWidth: '832px',
       data: this.bookInfo,
     });
