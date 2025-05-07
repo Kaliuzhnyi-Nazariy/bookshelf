@@ -1,13 +1,19 @@
 .general {
   background-color: var(--shelfcolor);
-  /* display: flex;
-  flex-direction: column;
-  justify-content: center; */
-  align-items: center;
+
   padding: 16px;
   min-height: 410px;
-  width: 800px;
+  min-width: 270px;
   overflow-x: hidden;
+  height: 450px;
+
+  @media screen and (min-width: 768px) {
+    width: 600px;
+  }
+
+  @media screen and (min-width: 1440px) {
+    min-width: 800px;
+  }
 }
 
 h3 {
@@ -16,27 +22,41 @@ h3 {
 }
 
 .form {
-  margin-top: 16px;
-  /* display: flex; */
-  /* flex-direction: column;
+  display: flex;
+  flex-direction: column;
   justify-content: center;
-  align-items: center; */
+  align-items: center;
 
-  display: grid;
-  /* grid-template-rows: repeat(6, 1fr); */
-  grid-auto-rows: auto;
-  grid-template-columns: repeat(4, 1fr);
-  grid-template-areas:
-    "p p n a"
-    "p p d d"
-    "pi pi bd bu"
-    "re re re re";
-  /* ". . en ea"
-    "p p d d"
-    "ep ep dn dn"
-    "re re re re"; */
   width: 100%;
   max-width: 800px;
+  height: 690px;
+
+  @media screen and (min-width: 768px) {
+    margin-top: 16px;
+
+    display: grid;
+    /* grid-template-rows: repeat(6, 1fr); */
+    grid-auto-rows: auto;
+    grid-template-columns: repeat(4, 1fr);
+    width: 100%;
+    height: 0%;
+    grid-template-areas:
+      "n n a a"
+      "p p d d"
+      "pi pi bd bu"
+      "re re re re";
+  }
+
+  @media screen and (min-width: 1440px) {
+    display: grid;
+    grid-auto-rows: auto;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-areas:
+      "p p n a"
+      "p p d d"
+      "pi pi bd bu"
+      "re re re re";
+  }
 }
 
 .title {
@@ -54,6 +74,10 @@ h3 {
 .DAO {
   grid-area: d;
   width: 100%;
+
+  @media screen and (min-width: 768px) {
+    justify-self: center;
+  }
 }
 
 .button {
@@ -91,22 +115,29 @@ mat-error {
 }
 
 .image {
-  width: 160px;
-  height: 300px;
+  width: 270px;
+  height: 105px;
   display: flex;
   align-self: center;
   justify-self: center;
   object-fit: contain;
+
+  @media screen and (min-width: 768px) {
+    margin-top: 50px;
+  }
+
+  @media screen and (min-width: 1440px) {
+    margin-top: 80px;
+  }
 }
 
 .file {
-  width: 90%;
+  width: 260px;
+  height: 105px;
+
   display: flex;
   align-self: center;
   justify-self: center;
-  height: 85%;
-  /* width: 210px; */
-  /*height: 50px; */
   border: 3px dashed var(--insideShelf);
   border-radius: 25px;
 
@@ -122,12 +153,21 @@ mat-error {
   :active {
     border: 3px dashed var(--borderHover);
   }
+  @media screen and (min-width: 768px) {
+    justify-self: center;
+    height: 165px;
+  }
+
+  @media screen and (min-width: 1440px) {
+    height: 245px;
+    width: 350px;
+  }
 }
 
 .file::before {
   content: "+ Add file (to 1MB)";
-  padding-left: 34%;
-  padding-top: 120px;
+  padding-left: 28%;
+  padding-top: 19%;
   display: inline-block;
 
   font-weight: 700;
@@ -137,21 +177,35 @@ mat-error {
   cursor: pointer;
 }
 
+@media screen and (min-width: 768px) {
+  .file::before {
+    padding-top: 28%;
+  }
+}
+
+@media screen and (min-width: 1440px) {
+  .file::before {
+    padding-left: 34%;
+    padding-top: 32%;
+  }
+}
+
 .file-withbgc {
   position: absolute;
-  top: 1%;
-  left: 31%;
-  width: 150px;
+  top: -5px;
+  left: 0;
+
+  width: 265px;
+
   display: flex;
   align-self: center;
   justify-self: center;
-  height: 250px;
-  /* width: 210px; */
-  /*height: 50px; */
+  height: 105px;
+
   border: 3px dashed var(--insideShelf);
   border-radius: 25px;
 
-  padding: 20px 0px;
+  padding: 5px 0px;
 
   color: transparent;
 
@@ -166,12 +220,22 @@ mat-error {
     border: 3px dashed var(--borderHover);
     opacity: 1;
   }
+
+  @media screen and (min-width: 768px) {
+    height: 165px;
+    padding: 20px 0px;
+  }
+
+  @media screen and (min-width: 1440px) {
+    height: 245px;
+    width: 350px;
+  }
 }
 
 .file-withbgc::before {
   content: "+ Add file (to 1MB)";
-  padding-left: 12%;
-  padding-top: 120px;
+  padding-left: 28%;
+  padding-top: 18%;
   display: inline-block;
 
   font-weight: 700;
@@ -181,9 +245,40 @@ mat-error {
   cursor: pointer;
 }
 
+@media screen and (min-width: 768px) {
+  .file-withbgc::before {
+    padding-top: 28%;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .file-withbgc::before {
+    padding-top: 32%;
+    padding-left: 32%;
+  }
+}
+
 .file-input {
   grid-area: p;
   position: relative;
+  width: 270px;
+
+  @media screen and (min-width: 768px) {
+    height: 210px;
+    justify-self: center;
+    align-self: flex-start;
+  }
+
+  @media screen and (min-width: 1440px) {
+    height: 245px;
+    width: 350px;
+  }
+}
+
+.input-field {
+  @media screen and (max-width: 1439px) {
+    width: 270px;
+  }
 }
 
 .imageName {
@@ -192,4 +287,32 @@ mat-error {
 
 span {
   margin-top: 16px;
+}
+
+.scroll-container {
+  max-height: 690px;
+  overflow-y: auto;
+}
+.scroll-container::-webkit-scrollbar {
+  width: 8px;
+}
+
+.scroll-container::-webkit-scrollbar-track {
+  background: var(--insideShelf);
+}
+
+.scroll-container::-webkit-scrollbar-thumb {
+  background: var(--insideShelf);
+  color: var(--shelfcolor);
+  /* border-radius: 10px; */
+  border-radius: 25%;
+}
+
+.scroll-container::-webkit-scrollbar-thumb:hover {
+  background: var(--insideShelf);
+}
+
+.scroll-container {
+  scrollbar-width: thin;
+  scrollbar-color: var(--shelfcolor) var(--insideShelf);
 }

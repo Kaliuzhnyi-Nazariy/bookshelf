@@ -1,17 +1,17 @@
 .general {
   background-color: var(--shelfcolor);
-  /* display: flex;
-  flex-direction: column;
-  justify-content: center; */
-  /* align-items: center; */
+
   padding: 16px;
-  min-height: 410px;
+  height: 450px;
   min-width: 270px;
   /* width: 800px; */
   overflow-x: hidden;
 
   @media screen and (min-width: 768px) {
     min-width: 600px;
+  }
+  @media screen and (min-width: 1440px) {
+    min-width: 800px;
   }
 }
 
@@ -21,14 +21,16 @@ h3 {
 }
 
 .form {
-  margin-top: 16px;
-
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 
+  height: 650px;
+
   @media screen and (min-width: 768px) {
+    margin-top: 16px;
+
     display: grid;
     grid-auto-rows: auto;
     grid-template-columns: repeat(2, 1fr);
@@ -39,6 +41,8 @@ h3 {
       "re re";
 
     width: 100%;
+    height: 0%;
+
     max-width: 600px;
   }
 
@@ -116,8 +120,6 @@ mat-error {
   @media screen and (min-width: 1440px) {
     width: 300px;
   }
-  /* width: 50%;
-  height: 50%; */
 }
 
 .preview {
@@ -178,7 +180,7 @@ mat-error {
   }
 }
 
-@media screen and (min-width: 768px) {
+@media screen and (min-width: 1440px) {
   .file::before {
     padding-left: 32%;
     padding-top: 38%;
@@ -207,5 +209,34 @@ span {
     align-self: center;
     justify-self: center;
   }
-  /* width: 100%; */
+}
+
+.scroll-container {
+  max-height: 690px;
+  overflow-y: auto;
+}
+
+/* Add the scrollbar styles as shown above */
+.scroll-container::-webkit-scrollbar {
+  width: 8px;
+}
+
+.scroll-container::-webkit-scrollbar-track {
+  background: var(--insideShelf);
+}
+
+.scroll-container::-webkit-scrollbar-thumb {
+  background: var(--insideShelf);
+  color: var(--shelfcolor);
+  /* border-radius: 10px; */
+  border-radius: 25%;
+}
+
+.scroll-container::-webkit-scrollbar-thumb:hover {
+  background: var(--insideShelf);
+}
+
+.scroll-container {
+  scrollbar-width: thin;
+  scrollbar-color: var(--shelfcolor) var(--insideShelf);
 }

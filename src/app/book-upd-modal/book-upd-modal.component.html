@@ -1,7 +1,7 @@
-<div class="general">
+<div class="general scroll-container">
   <h3>Update book</h3>
   <form [formGroup]="updBookForm" (ngSubmit)="onSubmit()" class="form">
-    <mat-form-field apperance="fill" class="title">
+    <mat-form-field apperance="fill" class="title input-field">
       <mat-label>Title</mat-label>
       <input
         matInput
@@ -15,7 +15,7 @@
       }
     </mat-form-field>
 
-    <mat-form-field apperance="fill" class="author">
+    <mat-form-field apperance="fill" class="author input-field">
       <mat-label>Author</mat-label>
       <input
         matInput
@@ -29,7 +29,7 @@
       }
     </mat-form-field>
 
-    <mat-form-field apperance="fill" class="DAO">
+    <mat-form-field apperance="fill" class="DAO input-field">
       <mat-label>Description and opinion</mat-label>
       <textarea
         matInput
@@ -50,7 +50,7 @@
       (change)="uploadPhoto($event)"
     /> -->
 
-    <div class="file-input">
+    <div class="file-input input-field">
       @if(imagePreview()) {
       <img [src]="imagePreview()" alt="preview" class="image" />
       <input
@@ -73,7 +73,7 @@
     } @if(imageName()) {
     <p class="imageName">{{ imageName() }}</p>
     } @if(isLoading()) {
-    <span>Loading...</span>
+    <span style="grid-area: bd">Loading...</span>
     } @else {
     <button type="submit" class="button upd">Update</button>
     <button type="button" class="button del" (click)="deleteBook()">
