@@ -55,16 +55,6 @@ export class UserPanelComponent implements AfterViewInit, OnInit {
         });
       }
     });
-
-    // this.isLoggedIn = this.authService.authStatus;
-    // this.authService.userData.subscribe({
-    //   next: (val) => {
-    //     if (val) {
-    //       this.userName = val.name;
-    //       this.userEmail = val.email;
-    //     }
-    //   },
-    // });
   }
 
   ngAfterViewInit(): void {
@@ -82,18 +72,6 @@ export class UserPanelComponent implements AfterViewInit, OnInit {
         });
       }
     });
-    // this.isLoggedIn = this.authService.authStatus;
-    // console.log('this.authService.authStatus: ', this.authService.authStatus);
-    // if (this.isLoggedIn) {
-    //   this.authService.userData.subscribe({
-    //     next: (val) => {
-    //       if (val) {
-    //         this.userName = val.name;
-    //         this.userEmail = val.email;
-    //       }
-    //     },
-    //   });
-    // }
   }
 
   openSignUpModal(): void {

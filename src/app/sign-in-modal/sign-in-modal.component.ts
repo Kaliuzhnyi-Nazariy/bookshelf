@@ -67,16 +67,6 @@ export class SignInModalComponent {
         await this.authService.signIn(this.signinForm.value);
         this.isLoading = false;
         this.dialog.close();
-
-        // this.authService.signIn(this.signinForm.value).subscribe({
-        //   next: () => {
-        // this.dialog.close();
-        //   },
-        //   error: (err) => {
-        //     this.isLoading = false;
-        //     this.errorReqMessage.set(err.error.message);
-        //   },
-        // });
       } else {
         this.isLoading = false;
       }

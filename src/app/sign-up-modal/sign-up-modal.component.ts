@@ -72,10 +72,6 @@ export class SignUpModalComponent {
       },
       { validators: this.matchPasswords.bind(this) }
     );
-
-    // merge(this.email!.statusChanges, this.email!.valueChanges)
-    //   .pipe(takeUntilDestroyed())
-    //   .subscribe(() => this.updateEmailErrorMessage());
   }
 
   matchPasswords(group: FormGroup) {
@@ -92,15 +88,6 @@ export class SignUpModalComponent {
       if (this.signupForm.valid) {
         await this.service.signUp(this.signupForm.value);
         this.dialog.close();
-        // this.service.signUp(this.signupForm.value).subscribe({
-        //   next: () => {
-        //     this.dialog.close();
-        //   },
-        //   error: (err) => {
-        //     this.isLoading = false;
-        //     this.errorReqMessage.set(err.error.message);
-        //   },
-        // });
       } else {
         this.isLoading = false;
       }

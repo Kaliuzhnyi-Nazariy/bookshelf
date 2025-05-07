@@ -14,8 +14,6 @@ import { AuthService } from '../api';
   styleUrl: './shelf.component.css',
 })
 export class ShelfComponent implements OnInit {
-  // public listForTest: string[] = [];
-  // public chunkedListTest: string[][] = [];
   public listOfBooks: Book[] = [];
   public chunkedList: Book[][] = [];
   private columnAmount = 7;
@@ -37,7 +35,6 @@ export class ShelfComponent implements OnInit {
     this.authService.authStatus.subscribe({
       next: (val) => this.isLoggedIn.set(val),
     });
-    // this.isLoggedIn.set(this.authService.authStatus);
   }
 
   ngOnInit(): void {
@@ -45,7 +42,6 @@ export class ShelfComponent implements OnInit {
   }
 
   private chunkArray(array: Book[], columns: number): any[][] {
-    // private chunkArray(array: string[], columns: number): any[][] {
     const result = [];
 
     let unfavArr = [];
@@ -57,7 +53,6 @@ export class ShelfComponent implements OnInit {
     }
 
     const fullList = [...unfavArr, { title: 'add' } as Book];
-    // const fullList = [...array];
 
     for (let i = 0; i < fullList.length; i += columns) {
       result.push(fullList.slice(i, i + columns));
@@ -67,8 +62,6 @@ export class ShelfComponent implements OnInit {
   }
 
   openUpdModal(item: Book) {
-    // openUpdModal(item: string) {
-    // this.modal.itemName.set(item);
     const dialogRef = this.dialog.open(BookUpdModalComponent, {
       width: '832px',
       maxWidth: '832px',
@@ -76,24 +69,18 @@ export class ShelfComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe({
-      next: () => {
-        // this.takeBooks();
-      },
+      next: () => {},
     });
   }
 
   openAddModal() {
-    // this.modal.itemName.set(item);
-    // this.dialog.open(AddBookModalComponent, { width: '300px' });
     const dialogRef = this.dialog.open(AddBookModalComponent, {
       minWidth: '300px',
       maxWidth: '832px',
     });
 
     dialogRef.afterClosed().subscribe({
-      next: () => {
-        // this.takeBooks();
-      },
+      next: () => {},
     });
   }
 
