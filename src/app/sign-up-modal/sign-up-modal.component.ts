@@ -86,8 +86,11 @@ export class SignUpModalComponent {
       this.isLoading = true;
       this.errorReqMessage.set('');
       if (this.signupForm.valid) {
-        await this.service.signUp(this.signupForm.value);
-        this.dialog.close();
+        const res = await this.service.signUp(this.signupForm.value);
+
+        if (res.email) {
+          this.dialog.close();
+        }
       } else {
         this.isLoading = false;
       }
