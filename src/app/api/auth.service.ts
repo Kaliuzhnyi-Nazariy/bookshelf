@@ -1,6 +1,7 @@
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { ICreatedUser, ISignIn, ISignUp } from '../dtos';
 import { BehaviorSubject, Observable, startWith, Subject, tap } from 'rxjs';
+import { PopUpService } from '../services/pop-up.service';
 
 @Injectable({
   providedIn: 'root',
@@ -9,25 +10,52 @@ export class AuthService {
   private baseURL = 'https://bookshelf-api-8c76.onrender.com/auth';
   // private baseURL = 'http://localhost:3500/auth';
 
-  private loggedIn = new BehaviorSubject<boolean>(false);
+  private loggedIn = signal(false);
 
-  get authStatus(): Observable<boolean> {
-    return this.loggedIn.asObservable();
+  private popUpService = inject(PopUpService);
+
+  constructor() {
+    const stored = localStorage.getItem('isLoggedIn');
+    if (stored !== null) {
+      this.loggedIn.set(JSON.parse(stored));
+    }
   }
+
+  get authLogStatus(): boolean {
+    const stored = localStorage.getItem('isLoggedIn');
+    if (stored !== null) {
+      return JSON.parse(stored);
+    }
+    return this.loggedIn();
+  }
+
+  authStatus = this.loggedIn;
 
   setAuthStat(val: boolean) {
-    this.loggedIn.next(val);
+    // this.loggedIn.next(val);
+    localStorage.setItem('isLoggedIn', JSON.stringify(val));
+    this.loggedIn.set(val);
+    return;
   }
 
-  private user = new BehaviorSubject<ICreatedUser | null>(null);
-  userData = this.user.asObservable();
+  private user = signal<ICreatedUser>({
+    _id: '',
+    accessToken: '',
+    email: '',
+    password: '',
+    name: '',
+  });
+
+  userData = this.user();
 
   setUserData(data: ICreatedUser) {
-    this.user.next(data);
+    // this.user.next(data);
+    this.user.set(data);
+    return;
   }
 
   clearUserData() {
-    this.user.next({
+    this.user.set({
       _id: '',
       accessToken: '',
       email: '',
@@ -48,10 +76,15 @@ export class AuthService {
       });
 
       const data = await request.json();
-      if (data) {
-        this.setAuthStat(true);
+
+      if (data.message) {
+        this.popUpService.setErrorMessage(data.message);
+        throw new Error(data.error);
       }
-      location.reload();
+
+      this.setAuthStat(true);
+
+      this.popUpService.setSuccessMessage('Signed up!');
 
       return data;
     } catch (error) {
@@ -62,7 +95,7 @@ export class AuthService {
 
   async signIn(dto: ISignIn) {
     try {
-      const answer = await fetch(`${this.baseURL}/signin`, {
+      const req = await fetch(`${this.baseURL}/signin`, {
         method: 'POST',
         credentials: 'include',
         headers: {
@@ -70,17 +103,24 @@ export class AuthService {
         },
         body: JSON.stringify(dto),
       });
-      const data = await answer.json();
-      if (data) {
-        console.log(data);
-        this.setAuthStat(true);
+
+      const data = await req.json();
+
+      if (data.message) {
+        this.popUpService.setErrorMessage(data.message);
+        this.setAuthStat(false);
+        return;
       }
 
-      location.reload();
+      this.setUserData(data);
+      this.setAuthStat(true);
+
+      this.popUpService.setSuccessMessage('Signed in!');
+
       return data;
-    } catch (error) {
-      console.error(error);
-      this.setAuthStat(false);
+    } catch (error: any) {
+      console.log(error);
+      this.popUpService.setErrorMessage(error.message);
     }
   }
 
@@ -94,30 +134,15 @@ export class AuthService {
         },
       });
       this.setAuthStat(false);
-      location.reload();
-    } catch (error) {
-      console.error(error);
+      this.popUpService.setSuccessMessage('Logged out!');
+      this.clearUserData();
+
+      return;
+    } catch (error: any) {
+      // console.error(error);
+      this.popUpService.setErrorMessage(error.message);
       this.setAuthStat(false);
+      return;
     }
   }
-
-  // logout(): Observable<void> {
-  //   const accessToken = at();
-
-  //   const headers = new HttpHeaders({
-  //     'Content-Type': 'application/json',
-  //     Authorization: `Bearer ${accessToken}`,
-  //   });
-
-  //   return this.http
-  //     .delete<void>(`${this.baseURL}/logout`, {
-  //       headers,
-  //       withCredentials: true,
-  //     })
-  //     .pipe(
-  //       tap(() => {
-  //         this.setAuthStat(false);
-  //       })
-  //     );
-  // }
 }
