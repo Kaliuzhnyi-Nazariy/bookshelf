@@ -25,6 +25,7 @@ export class FavShelfComponent {
     private authService: AuthService
   ) {
     effect(() => {
+      this.isLoggedIn.set(this.authService.authStatus());
       const books = this.bookService.books();
       this.listOfBooks = books;
       this.listOfFavBooks = this.listOfBooks.filter(
@@ -32,9 +33,9 @@ export class FavShelfComponent {
       );
       this.chunkedList = this.chunkArray(this.listOfBooks, this.columnAmount);
     });
-    this.authService.authStatus.subscribe({
-      next: (val) => this.isLoggedIn.set(val),
-    });
+    // this.authService.authStatus.subscribe({
+    //   next: (val) => this.isLoggedIn.set(val),
+    // });
   }
 
   private chunkArray(array: Book[], columns: number): any {
