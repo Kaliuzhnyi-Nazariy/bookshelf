@@ -35,8 +35,6 @@ export class SignInModalComponent {
   emailErrorMessage = signal('');
   passwordErrorMessage = signal('');
 
-  errorReqMessage = signal('');
-
   hide = signal(true);
 
   constructor(
@@ -61,16 +59,18 @@ export class SignInModalComponent {
   async onSubmit() {
     try {
       this.isLoading = true;
-      this.errorReqMessage.set('');
 
       if (this.signinForm.valid) {
-        await this.authService.signIn(this.signinForm.value);
+        const res = await this.authService.signIn(this.signinForm.value);
         this.isLoading = false;
-        this.dialog.close();
+
+        if (res.email) {
+          this.dialog.close();
+        }
       } else {
         this.isLoading = false;
       }
-    } catch (error) {
+    } catch (error: any) {
       this.isLoading = false;
     }
   }
