@@ -1,0 +1,7 @@
+<ul class="pop-up-container">
+  @for(error of errorMessages(); track $index) {
+  <li class="pop-up error">{{ error }}</li>
+  } @for(success of successMessages(); track $index) {
+  <li class="pop-up success">{{ success }}</li>
+  }
+</ul>

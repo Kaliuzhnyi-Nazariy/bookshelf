@@ -5,6 +5,7 @@ import { ShelfComponent } from './shelf/shelf.component';
 import { FavShelfComponent } from './fav-shelf/fav-shelf.component';
 import { UserPanelComponent } from './user-panel/user-panel.component';
 import { ChatComponent } from './chat/chat.component';
+import { PopUpComponent } from './pop-up/pop-up.component';
 
 @Component({
   selector: 'app-root',
@@ -15,6 +16,7 @@ import { ChatComponent } from './chat/chat.component';
     FavShelfComponent,
     UserPanelComponent,
     ChatComponent,
+    PopUpComponent,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
