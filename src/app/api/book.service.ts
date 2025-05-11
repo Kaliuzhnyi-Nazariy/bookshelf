@@ -1,6 +1,8 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { accessToken } from './helper';
 import { AddBook, Book } from '../dtos';
+import { AuthService } from './auth.service';
+import { PopUpService } from '../services/pop-up.service';
 
 @Injectable({
   providedIn: 'root',
@@ -8,6 +10,9 @@ import { AddBook, Book } from '../dtos';
 export class BookService {
   // private baseURL = 'http://localhost:3500/book';
   private baseURL = 'https://bookshelf-api-8c76.onrender.com/book';
+
+  authService = inject(AuthService);
+  popUpService = inject(PopUpService);
 
   constructor() {}
 
@@ -32,9 +37,19 @@ export class BookService {
       });
 
       const data = await request.json();
+
+      if (data.message) {
+        this.popUpService.setErrorMessage(data.message);
+
+        this.isLoading.set(false);
+        throw new Error(data.message);
+      }
+
       this.books.set(data);
       this.allBooksAmount.set(data.length);
       this.isLoading.set(false);
+
+      return data;
     } catch (error) {
       console.error(error);
       this.isLoading.set(false);
@@ -51,13 +66,21 @@ export class BookService {
       });
 
       const data = await request.json();
+
+      if (data.message) {
+        this.popUpService.setErrorMessage(data.message);
+        return;
+      }
+
       const oldBooks = this.books();
       this.books.set([...oldBooks, data]);
       this.allBooksAmount.set(this.allBooksAmount() + 1);
 
       this.isLoading.set(false);
-    } catch (error) {
-      console.error(error);
+
+      this.popUpService.setSuccessMessage('Book added!');
+    } catch (error: any) {
+      this.popUpService.setErrorMessage(error.message);
       this.isLoading.set(false);
     }
   }
@@ -74,6 +97,11 @@ export class BookService {
 
       const data = await request.json();
 
+      if (data.message) {
+        this.popUpService.setErrorMessage(data.message);
+        return;
+      }
+
       const oldBooks = this.books();
 
       const updBookIndex = oldBooks.findIndex((b) => b._id === data._id);
@@ -84,8 +112,11 @@ export class BookService {
         this.books.set(newArr);
         this.isLoading.set(false);
       }
-    } catch (error) {
-      console.error(error);
+
+      this.popUpService.setSuccessMessage('Book updated!');
+    } catch (error: any) {
+      this.popUpService.setErrorMessage(error.message);
+
       this.isLoading.set(false);
     }
   }
@@ -102,6 +133,11 @@ export class BookService {
 
       const data = await request.json();
 
+      if (data.message) {
+        this.popUpService.setErrorMessage(data.message);
+        return;
+      }
+
       const oldBooks = this.books();
       const favIndex = oldBooks.findIndex((book) => book._id === data._id);
 
@@ -110,29 +146,14 @@ export class BookService {
         newArr.splice(favIndex, 1, data);
         this.books.set(newArr);
       }
-    } catch (error) {
+
+      this.popUpService.setSuccessMessage('Book changed favorite status!');
+    } catch (error: any) {
+      this.popUpService.setErrorMessage(error.message);
+
       console.log(error);
     }
   }
-
-  // deleteBook(bookId: string) {
-  //   const headers = {
-  //     'Content-Type': 'application/json',
-  //     Authorization: `Bearer ${this.token}`,
-  //   };
-
-  //   this.http.delete<Book>(`${this.baseURL}/${bookId}`, { headers }).subscribe({
-  //     next: (book) => {
-  //       if (!book) throw new Error('No user!');
-  //       const fullList = this.books();
-  //       const newList = fullList.filter((_book) => _book._id !== book._id);
-  //       this.books.set(newList);
-  //     },
-  //     error: (err) => {
-  //       console.log(err);
-  //     },
-  //   });
-  // }
 
   async deleteBook(bookId: string) {
     this.isLoading.set(true);
@@ -146,6 +167,11 @@ export class BookService {
 
       const data = await request.json();
 
+      if (data.message) {
+        this.popUpService.setErrorMessage(data.message);
+        return;
+      }
+
       const allBooks = this.books();
       const delIndex = allBooks.findIndex((book) => book._id === data._id);
 
@@ -158,8 +184,11 @@ export class BookService {
 
         this.isLoading.set(false);
       }
-    } catch (error) {
-      console.log(error);
+
+      this.popUpService.setSuccessMessage('Book deleted!');
+    } catch (error: any) {
+      this.popUpService.setErrorMessage(error.message);
+
       this.isLoading.set(false);
     }
   }

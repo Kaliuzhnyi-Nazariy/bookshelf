@@ -1,4 +1,5 @@
 import { inject, Injectable, signal } from '@angular/core';
+import { PopUpService } from '../services/pop-up.service';
 
 @Injectable({
   providedIn: 'root',
@@ -6,6 +7,8 @@ import { inject, Injectable, signal } from '@angular/core';
 export class AiService {
   // private URL = 'http://localhost:3500/ai';
   private URL = 'https://bookshelf-api-8c76.onrender.com/ai';
+
+  private popUpService = inject(PopUpService);
 
   answers = signal<string[]>([]);
   reqErrMessage = signal<string>('');
@@ -24,13 +27,16 @@ export class AiService {
 
       const data = await request.json();
 
-      if (data.message) throw new Error(data.message);
+      if (data.message) {
+        this.popUpService.setErrorMessage(data.message);
+        return;
+      }
 
       this.answers.set(data);
       this.isLoading.set(false);
-    } catch (error) {
-      console.error(error);
-      this.isLoading.set(false);
+    } catch (error: any) {
+      this.popUpService.setErrorMessage(error.message);
+      return;
     }
   }
 
@@ -51,14 +57,19 @@ export class AiService {
 
       const data = await request.json();
 
-      if (data.message) throw new Error(data.message);
+      if (data.message) {
+        this.popUpService.setErrorMessage(data.message);
+        return;
+      }
 
       const newList = [...this.answers(), data.result];
       this.answers.set(newList);
       this.isLoading.set(false);
-    } catch (error) {
-      console.log(error);
-      this.isLoading.set(false);
+
+      this.popUpService.setSuccessMessage('Answer received!');
+    } catch (error: any) {
+      this.popUpService.setErrorMessage(error.message);
+      return;
     }
   }
 }
