@@ -1,6 +1,7 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { ICreatedUser, IUpdUser, IUpdUserReturn } from '../dtos';
 import { AuthService } from './auth.service';
+import { PopUpService } from '../services/pop-up.service';
 
 @Injectable({
   providedIn: 'root',
@@ -13,10 +14,18 @@ export class UsersService {
   // private baseURL = 'http://localhost:3500/users';
 
   private authService = inject(AuthService);
+  private popUpService = inject(PopUpService);
 
-  async checkIfLogged() {
+  checkIfLogged() {
+    console.log(Boolean(localStorage.getItem('isLoggedIn')));
+    if (Boolean(localStorage.getItem('isLoggedIn')))
+      return Boolean(localStorage.getItem('isLoggedIn'));
+    return this.authService.authStatus;
+  }
+
+  async getUserData() {
     try {
-      const request = await fetch(`${this.baseURL}/me`, {
+      const req = await fetch(`${this.baseURL}/me`, {
         method: 'GET',
         credentials: 'include',
         headers: {
@@ -24,19 +33,21 @@ export class UsersService {
         },
       });
 
-      if (!request) return this.authService.setAuthStat(false);
+      const data = await req.json();
 
-      const data = await request.json();
+      if (data.message) {
+        this.popUpService.setErrorMessage(data.message);
 
-      if (data?.message) return this.authService.setAuthStat(false);
+        throw new Error(data.message);
+      }
 
-      this.authService.setUserData(data);
       this.userName.set(data.name);
       this.userEmail.set(data.email);
-      return this.authService.setAuthStat(true);
-    } catch (error) {
-      console.log({ error });
-      return this.authService.setAuthStat(false);
+
+      return data;
+    } catch (error: any) {
+      this.popUpService.setErrorMessage(error.message);
+      return;
     }
   }
 
@@ -52,9 +63,17 @@ export class UsersService {
       });
 
       const data = await request.json();
+
+      if (data.message) {
+        this.popUpService.setErrorMessage(data.message);
+      }
+
+      this.popUpService.setSuccessMessage('User updated! Please sign in!');
+
       return data;
-    } catch (error) {
-      console.error(error);
+    } catch (error: any) {
+      this.popUpService.setErrorMessage(error.message);
+      return;
     }
   }
 
@@ -68,13 +87,19 @@ export class UsersService {
 
       const data = await request.json();
 
-      if (data.message) return;
+      if (data.message) {
+        this.popUpService.setErrorMessage(data.message);
+      }
+
       this.authService.setAuthStat(false);
       this.authService.clearUserData();
       this.userName.set('');
       this.userEmail.set('');
-    } catch (error) {
-      console.error(error);
+
+      this.popUpService.setSuccessMessage('Account deleted!');
+    } catch (error: any) {
+      this.popUpService.setErrorMessage(error.message);
+      return;
     }
   }
 }
