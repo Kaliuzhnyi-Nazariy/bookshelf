@@ -1,4 +1,11 @@
-import { Component, effect, OnInit, signal } from '@angular/core';
+import {
+  AfterContentInit,
+  Component,
+  DoCheck,
+  effect,
+  OnInit,
+  signal,
+} from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { BookUpdModalComponent } from '../book-upd-modal/book-upd-modal.component';
 import { BookService } from '../api/book.service';
@@ -13,7 +20,7 @@ import { AuthService } from '../api';
   templateUrl: './shelf.component.html',
   styleUrl: './shelf.component.css',
 })
-export class ShelfComponent implements OnInit {
+export class ShelfComponent implements OnInit, AfterContentInit {
   public listOfBooks: Book[] = [];
   public chunkedList: Book[][] = [];
   private columnAmount = 7;
@@ -23,22 +30,66 @@ export class ShelfComponent implements OnInit {
   isLoading = signal(false);
   errorFetch = signal('');
 
+  private booksFetched = signal(false);
+
   constructor(
     public dialog: MatDialog,
     private bookService: BookService,
     private authService: AuthService
   ) {
     effect(() => {
-      this.listOfBooks = this.bookService.books();
-      this.chunkedList = this.chunkArray(this.listOfBooks, this.columnAmount);
-    });
-    this.authService.authStatus.subscribe({
-      next: (val) => this.isLoggedIn.set(val),
+      this.isLoggedIn.set(this.authService.authStatus());
+
+      if (this.isLoggedIn() && !this.booksFetched()) {
+        this.getBooks();
+      }
+
+      if (this.isLoggedIn()) {
+        this.listOfBooks = this.bookService.books();
+        this.chunkedList = this.chunkArray(this.listOfBooks, this.columnAmount);
+      }
+
+      if (!this.isLoggedIn()) {
+        this.booksFetched.set(false);
+        this.listOfBooks = [];
+        this.chunkedList = this.chunkArray(this.listOfBooks, this.columnAmount);
+      }
     });
   }
 
   ngOnInit(): void {
-    this.bookService.getBooks();
+    this.isLoggedIn.set(this.authService.authStatus());
+
+    if (this.isLoggedIn()) {
+      // this.getBooks();
+      this.listOfBooks = this.bookService.books();
+      this.chunkedList = this.chunkArray(this.listOfBooks, this.columnAmount);
+    }
+  }
+
+  ngAfterContentInit(): void {
+    if (this.isLoggedIn()) {
+      // this.getBooks();
+      this.listOfBooks = this.bookService.books();
+      this.chunkedList = this.chunkArray(this.listOfBooks, this.columnAmount);
+    }
+  }
+
+  // ngDoCheck(): void {
+  //   if (this.isLoggedIn() && !this.booksFetched()) {
+  //     console.log(this.isLoggedIn() && !this.booksFetched());
+  //     this.getBooks();
+  //     console.log('triggered');
+  //   }
+  // }
+
+  async getBooks() {
+    if (this.isLoggedIn()) {
+      await this.bookService.getBooks();
+      this.listOfBooks = this.bookService.books();
+      this.chunkedList = this.chunkArray(this.listOfBooks, this.columnAmount);
+      this.booksFetched.set(true);
+    }
   }
 
   private chunkArray(array: Book[], columns: number): any[][] {
