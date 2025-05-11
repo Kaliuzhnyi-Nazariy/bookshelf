@@ -19,10 +19,12 @@
     <button class="button del" (click)="openDelModal()">Delete</button>
   </div>
 
-  @if(!isLoggedIn) {
+  @if(!isLoggedIn()) {
   <div class="notEntered">
     <h3>Auth</h3>
     <p>For use this app please authorize!</p>
+    <!-- <p>{{ !isLoggedIn() }}</p> -->
+
     <div class="groupOfButtons">
       <button class="button signin" (click)="openSignInModal()">Sign in</button>
       <button class="button signup" (click)="openSignUpModal()">Sign up</button>
@@ -30,4 +32,5 @@
   </div>
 
   }
+  <!-- <p>{{ !isLoggedIn() }}</p> -->
 </div>

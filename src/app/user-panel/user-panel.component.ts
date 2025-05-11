@@ -27,11 +27,24 @@ export class UserPanelComponent implements AfterViewInit, OnInit {
     private bookService: BookService
   ) {
     effect(() => {
+      this.isLoggedIn.set(this.authService.authStatus());
+
+      if (this.isLoggedIn()) {
+        this.getInfo();
+      }
+
       this.allAmountOfBooks = this.bookService.allBooksAmount();
     });
   }
 
-  isLoggedIn = false;
+  async getInfo() {
+    const data: { name: string; email: string } =
+      await this.userService.getUserData();
+    this.userName = data.name || '';
+    this.userEmail = data.email || '';
+  }
+
+  isLoggedIn = signal(false);
   userName: string = '';
   userEmail: string = '';
 
@@ -40,38 +53,21 @@ export class UserPanelComponent implements AfterViewInit, OnInit {
   errReqMessage = signal('');
 
   ngOnInit(): void {
-    this.userService.checkIfLogged();
+    // this.isLoggedIn = this.authService.authStatus;
+    if (this.isLoggedIn()) {
+      this.getInfo();
+    }
 
-    this.authService.authStatus.subscribe((status) => {
-      this.isLoggedIn = status;
-      if (status) {
-        this.authService.userData.subscribe({
-          next: (val) => {
-            if (val) {
-              this.userName = val.name;
-              this.userEmail = val.email;
-            }
-          },
-        });
-      }
-    });
+    this.allAmountOfBooks = this.bookService.allBooksAmount();
   }
 
   ngAfterViewInit(): void {
-    this.authService.authStatus.subscribe((status) => {
-      this.isLoggedIn = status;
-      if (status) {
-        this.authService.userData.subscribe({
-          next: (val) => {
-            if (val) {
-              console.log({ status }, val);
-              this.userName = val.name;
-              this.userEmail = val.email;
-            }
-          },
-        });
-      }
-    });
+    // this.isLoggedIn = this.authService.authStatus;
+    if (this.isLoggedIn()) {
+      this.getInfo();
+    }
+
+    this.allAmountOfBooks = this.bookService.allBooksAmount();
   }
 
   openSignUpModal(): void {
