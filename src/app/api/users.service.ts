@@ -18,9 +18,11 @@ export class UsersService {
 
   checkIfLogged() {
     console.log(Boolean(localStorage.getItem('isLoggedIn')));
-    if (Boolean(localStorage.getItem('isLoggedIn')))
+    if (Boolean(localStorage.getItem('isLoggedIn'))) {
       return Boolean(localStorage.getItem('isLoggedIn'));
-    return this.authService.authStatus;
+    } else {
+      return this.authService.setAuthStat(false);
+    }
   }
 
   async getUserData() {
@@ -47,6 +49,7 @@ export class UsersService {
       return data;
     } catch (error: any) {
       this.popUpService.setErrorMessage(error.message);
+      this.authService.setAuthStat(false);
       return;
     }
   }
