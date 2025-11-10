@@ -56,22 +56,54 @@ export class SignInModalComponent {
     });
   }
 
+  // async onSubmit() {
+  //   if (this.signinForm.invalid) {
+  //     this.isLoading = false;
+  //     return;
+  //   }
+
+  //   try {
+  //     this.isLoading = true;
+  //     this.signinForm.disable();
+
+  //     if (this.signinForm.valid) {
+  //       const res = await this.authService.signIn(this.signinForm.value);
+  //       this.isLoading = false;
+  //       this.signinForm.enable();
+
+  //       if (res.email) {
+  //         this.dialog.close();
+  //         this.signinForm.enable();
+  //       }
+  //     }
+  //   } catch (error: any) {
+  //     console.log(error);
+  //   } finally {
+  //     this.isLoading = false;
+  //     this.signinForm.enable();
+  //   }
+  // }
+
   async onSubmit() {
+    if (this.signinForm.invalid) {
+      this.isLoading = false;
+      return;
+    }
+
     try {
       this.isLoading = true;
+      this.signinForm.disable();
 
-      if (this.signinForm.valid) {
-        const res = await this.authService.signIn(this.signinForm.value);
-        this.isLoading = false;
+      const res = await this.authService.signIn(this.signinForm.value);
 
-        if (res.email) {
-          this.dialog.close();
-        }
-      } else {
-        this.isLoading = false;
+      if (res.email) {
+        this.dialog.close();
       }
-    } catch (error: any) {
+    } catch (error) {
+      console.error(error);
+    } finally {
       this.isLoading = false;
+      this.signinForm.enable();
     }
   }
 

@@ -81,22 +81,62 @@ export class SignUpModalComponent {
     return password === confirmPassword ? null : { passwordMismatch: true };
   }
 
+  // async onSubmit() {
+  //   try {
+  //     this.isLoading = true;
+  //     this.signupForm.disable();
+
+  //     this.errorReqMessage.set('');
+  //     if (this.signupForm.valid) {
+  //       const res = await this.service.signUp(this.signupForm.value);
+
+  //       if (res.email) {
+  //         this.dialog.close();
+  //       }
+  //     } else {
+  //       this.isLoading = false;
+  //     }
+
+  //     // const res = await this.service.signUp(this.signupForm.value);
+  //     // if (res.email) {
+  //     //   this.dialog.close();
+  //     // }
+  //   } catch (error) {
+  //     console.log(error);
+  //     this.isLoading = false;
+  //   }
+  // }
+
   async onSubmit() {
+    if (this.signupForm.invalid) {
+      this.isLoading = false;
+      return;
+    }
+
     try {
       this.isLoading = true;
-      this.errorReqMessage.set('');
-      if (this.signupForm.valid) {
-        const res = await this.service.signUp(this.signupForm.value);
+      this.signupForm.disable();
 
-        if (res.email) {
-          this.dialog.close();
-        }
-      } else {
-        this.isLoading = false;
+      this.errorReqMessage.set('');
+      // if (this.signupForm.valid) {
+      //   const res = await this.service.signUp(this.signupForm.value);
+
+      //   if (res.email) {
+      //     this.dialog.close();
+      //   }
+      // } else {
+      //   this.isLoading = false;
+      // }
+
+      const res = await this.service.signUp(this.signupForm.value);
+      if (res.email) {
+        this.dialog.close();
       }
     } catch (error) {
       console.log(error);
+    } finally {
       this.isLoading = false;
+      this.signupForm.enable();
     }
   }
 

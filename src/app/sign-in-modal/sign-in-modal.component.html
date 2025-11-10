@@ -9,6 +9,7 @@
         formControlName="email"
         (blur)="updateEmailMessage()"
         required
+        [disabled]="isLoading"
       />
     </mat-form-field>
 
@@ -21,6 +22,7 @@
         formControlName="password"
         (blur)="updatePasswordMessage()"
         required
+        [disabled]="isLoading"
       />
       <button
         mat-icon-button
@@ -28,6 +30,8 @@
         (click)="changeVisability($event)"
         [attr.aria-label]="'Hide password'"
         [attr.aria-pressed]="hide()"
+        type="button"
+        [disabled]="isLoading"
       >
         <mat-icon>{{ hide() ? "visibility_off" : "visibility" }}</mat-icon>
       </button>
