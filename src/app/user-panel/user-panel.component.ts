@@ -38,15 +38,23 @@ export class UserPanelComponent implements AfterViewInit, OnInit {
   }
 
   async getInfo() {
-    const data: { name: string; email: string } =
-      await this.userService.getUserData();
-    this.userName = data.name || '';
-    this.userEmail = data.email || '';
+    try {
+      this.isLoading.set(true);
+      const data: { name: string; email: string } =
+        await this.userService.getUserData();
+      this.userName = data.name || '';
+      this.userEmail = data.email || '';
+    } catch (err: any) {
+      console.log(err);
+    } finally {
+      this.isLoading.set(false);
+    }
   }
 
   isLoggedIn = signal(false);
   userName: string = '';
   userEmail: string = '';
+  isLoading = signal(false);
 
   allAmountOfBooks: number | null = null;
 

@@ -1,6 +1,7 @@
-<div class="main">
+<!-- <div class="main">
   <h2>Your account</h2>
 
+  if(!isLoading) {
   <span class="infoField">
     <h3>Name:</h3>
     <p>{{ userName }}</p>
@@ -22,15 +23,63 @@
   @if(!isLoggedIn()) {
   <div class="notEntered">
     <h3>Auth</h3>
-    <p>For use this app please authorize!</p>
-    <!-- <p>{{ !isLoggedIn() }}</p> -->
+    <p>For use this app please authorize!</p> -->
+<!-- <p>{{ !isLoggedIn() }}</p> -->
 
-    <div class="groupOfButtons">
+<!-- <div class="groupOfButtons">
       <button class="button signin" (click)="openSignInModal()">Sign in</button>
       <button class="button signup" (click)="openSignUpModal()">Sign up</button>
     </div>
   </div>
 
+  } -->
+<!-- <p>{{ !isLoggedIn() }}</p> -->
+<!-- } else {
+  <p>Loading</p>
   }
-  <!-- <p>{{ !isLoggedIn() }}</p> -->
+</div> -->
+
+<div class="main">
+  <h2>Your account</h2>
+
+  @if (!isLoading()) {
+  <span class="infoField">
+    <h3>Name:</h3>
+    <p>{{ userName }}</p>
+  </span>
+  <span class="infoField">
+    <h3>Email:</h3>
+    <p>{{ userEmail }}</p>
+  </span>
+  <span class="infoField">
+    <h3>All amount of books:</h3>
+    <p>{{ allAmountOfBooks }}</p>
+  </span>
+  <div class="groupOfButtons">
+    <button class="button upd" (click)="openUpdModal()">Update</button>
+    <button class="button lo" (click)="logout()">log out</button>
+    <button class="button del" (click)="openDelModal()">Delete</button>
+  </div>
+
+  @if (!isLoggedIn()) {
+  <div class="notEntered">
+    <h3>Auth</h3>
+    <p>For use this app please authorize!</p>
+    <div class="groupOfButtons">
+      <button class="button signin" (click)="openSignInModal()">Sign in</button>
+      <button class="button signup" (click)="openSignUpModal()">Sign up</button>
+    </div>
+  </div>
+  } } @else {
+  <div
+    style="
+      position: absolute;
+      top: 55%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    "
+  >
+    <p>Loading...</p>
+  </div>
+  }
 </div>
