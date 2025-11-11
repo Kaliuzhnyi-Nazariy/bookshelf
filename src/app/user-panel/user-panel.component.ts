@@ -46,6 +46,7 @@ export class UserPanelComponent implements AfterViewInit, OnInit {
       this.userEmail = data.email || '';
     } catch (err: any) {
       console.log(err);
+      this.isLoggedIn.set(false);
     } finally {
       this.isLoading.set(false);
     }
